@@ -1,0 +1,551 @@
+/* --- LOYALTY REWARDS WIDGET STYLE SHEET --- */
+
+/* Floating Gift Button */
+.rewards-float-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, #e38c36 0%, #c97825 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(227, 140, 54, 0.4);
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.rewards-float-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(227, 140, 54, 0.5);
+}
+
+.rewards-float-btn .gift-icon {
+  font-size: 1.2rem;
+  animation: pulseGift 2s infinite;
+}
+
+@keyframes pulseGift {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(1); }
+}
+
+/* Sidebar Drawer Overlay */
+.rewards-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 22, 18, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10001;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.rewards-drawer-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar Drawer Card */
+.rewards-drawer {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  background: rgba(253, 248, 243, 0.98);
+  border-left: 1px solid rgba(227, 140, 54, 0.2);
+  box-shadow: -10px 0 35px rgba(67, 36, 5, 0.15);
+  z-index: 10002;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+  color: #6e6458;
+}
+
+.rewards-drawer.active {
+  right: 0;
+}
+
+/* Header */
+.rewards-drawer-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(227, 140, 54, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(239, 231, 210, 0.4);
+}
+
+.rewards-drawer-header h2 {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #432405;
+  margin: 0;
+}
+
+.rewards-drawer-close {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6e6458;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.rewards-drawer-close:hover {
+  color: #e38c36;
+}
+
+/* Content Container */
+.rewards-drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Forms (Login/Register) */
+.rewards-form-group {
+  margin-bottom: 16px;
+}
+
+.rewards-form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #432405;
+  margin-bottom: 6px;
+}
+
+.rewards-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(227, 140, 54, 0.25);
+  background: #ffffff;
+  color: #432405;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.rewards-input:focus {
+  border-color: #e38c36;
+  box-shadow: 0 0 0 3px rgba(227, 140, 54, 0.15);
+  outline: none;
+}
+
+.rewards-btn {
+  width: 100%;
+  background: #e38c36;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 10px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.rewards-btn:hover {
+  background: #c97825;
+}
+
+.rewards-btn:active {
+  transform: translateY(1px);
+}
+
+.rewards-switch-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.rewards-switch-link a {
+  color: #e38c36;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.rewards-switch-link a:hover {
+  text-decoration: underline;
+}
+
+/* User Profile & Dashboard */
+.rewards-profile-card {
+  background: rgba(239, 231, 210, 0.3);
+  border: 1px solid rgba(227, 140, 54, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.rewards-profile-name {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #432405;
+  margin-bottom: 4px;
+}
+
+.rewards-profile-phone {
+  font-size: 0.85rem;
+  color: #807060;
+  margin-bottom: 16px;
+}
+
+/* Points Circle */
+.rewards-points-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdfa 0%, #efe7d2 100%);
+  border: 4px solid #e38c36;
+  box-shadow: 0 8px 20px rgba(227, 140, 54, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.rewards-points-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #e38c36;
+  line-height: 1;
+}
+
+.rewards-points-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #432405;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Section Titles */
+.rewards-section-title {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #432405;
+  margin-bottom: 12px;
+  margin-top: 24px;
+  border-bottom: 1px solid rgba(227, 140, 54, 0.1);
+  padding-bottom: 6px;
+}
+
+/* Streak Reward Grid */
+.rewards-streak-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rewards-streak-day {
+  background: #ffffff;
+  border: 1px solid rgba(227, 140, 54, 0.15);
+  border-radius: 12px;
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.rewards-streak-day.claimed {
+  background: rgba(74, 144, 112, 0.08);
+  border-color: #4a9070;
+  color: #4a9070;
+}
+
+.rewards-streak-day.current {
+  background: rgba(227, 140, 54, 0.08);
+  border-color: #e38c36;
+  color: #e38c36;
+  font-weight: 700;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(227, 140, 54, 0.15);
+}
+
+.rewards-streak-day.double {
+  grid-column: span 2;
+  background: radial-gradient(circle, #fffdfa 0%, rgba(227, 140, 54, 0.08) 100%);
+  border: 1px dashed #e38c36;
+}
+
+.rewards-streak-day .day-num {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #807060;
+  margin-bottom: 4px;
+}
+
+.rewards-streak-day.claimed .day-num {
+  color: #4a9070;
+}
+
+.rewards-streak-day.current .day-num {
+  color: #e38c36;
+}
+
+.rewards-streak-day .points-val {
+  font-weight: 700;
+}
+
+.rewards-streak-day.claimed::after {
+  content: "✓";
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+/* Redeem Reward List */
+.rewards-redeem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rewards-redeem-item {
+  background: #ffffff;
+  border: 1px solid rgba(227, 140, 54, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+
+.rewards-redeem-item:hover {
+  border-color: rgba(227, 140, 54, 0.35);
+}
+
+.rewards-redeem-info {
+  flex: 1;
+}
+
+.rewards-redeem-title {
+  font-weight: 700;
+  color: #432405;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.rewards-redeem-cost {
+  font-size: 0.8rem;
+  color: #e38c36;
+  font-weight: 700;
+}
+
+/* Progress bar inside redeem info */
+.rewards-progress-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(227, 140, 54, 0.1);
+  border-radius: 10px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.rewards-progress-bar {
+  height: 100%;
+  background: #e38c36;
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.rewards-redeem-btn {
+  background: #4a9070;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+
+.rewards-redeem-btn:hover {
+  background: #3e7a5e;
+}
+
+.rewards-redeem-btn:disabled {
+  background: rgba(110, 100, 88, 0.1);
+  color: #a0958a;
+  cursor: not-allowed;
+}
+
+/* Coupons Section */
+.rewards-coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rewards-coupon-item {
+  border: 1px dashed #e38c36;
+  background: rgba(227, 140, 54, 0.03);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rewards-coupon-item.used {
+  border-color: rgba(110, 100, 88, 0.25);
+  background: rgba(110, 100, 88, 0.02);
+  opacity: 0.7;
+}
+
+.rewards-coupon-details {
+  flex: 1;
+}
+
+.rewards-coupon-code {
+  font-family: monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #432405;
+  letter-spacing: 0.5px;
+}
+
+.rewards-coupon-item.used .rewards-coupon-code {
+  text-decoration: line-through;
+  color: #6e6458;
+}
+
+.rewards-coupon-label {
+  font-size: 0.75rem;
+  color: #807060;
+  margin-top: 2px;
+}
+
+.rewards-coupon-btn {
+  background: #e38c36;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.rewards-coupon-btn:hover {
+  background: #c97825;
+}
+
+.rewards-coupon-btn.copied {
+  background: #4a9070;
+}
+
+.rewards-coupon-btn:disabled {
+  background: rgba(110, 100, 88, 0.1);
+  color: #a0958a;
+  cursor: not-allowed;
+}
+
+/* Toast Alerts inside Drawer */
+.rewards-drawer-toast {
+  position: absolute;
+  top: 80px;
+  left: 24px;
+  right: 24px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #432405;
+  color: #ffffff;
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  z-index: 10005;
+  animation: modalFadeIn 0.2s ease;
+}
+
+.rewards-drawer-toast.success {
+  background: #4a9070;
+}
+
+.rewards-drawer-toast.error {
+  background: #c0524a;
+}
+
+.rewards-drawer-toast.hidden {
+  display: none !important;
+}
+
+/* Confetti Canvas */
+#rewards-confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10006;
+}
+
+/* 30-Day Activity Map Custom Colors & Styling */
+.rewards-contribution-cell {
+  aspect-ratio: 1;
+  background: #ebe4d3;
+  border-radius: 3.5px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.2s;
+}
+
+.rewards-contribution-cell:hover {
+  transform: scale(1.25);
+  z-index: 2;
+  box-shadow: 0 3px 8px rgba(67, 36, 5, 0.2);
+}
+
+.rewards-contribution-cell.claimed-10 {
+  background: #c2e2cc !important;
+}
+
+.rewards-contribution-cell.claimed-15 {
+  background: #88cfa4 !important;
+}
+
+.rewards-contribution-cell.claimed-20 {
+  background: #4a9070 !important;
+}
+
+.rewards-contribution-cell.claimed-50 {
+  background: #e38c36 !important;
+}
