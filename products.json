@@ -1,0 +1,90 @@
+[
+  {
+    "id": "prod-1",
+    "name": "Paneer Wrap",
+    "price": 23,
+    "category": "Wraps",
+    "description": "Soft tortilla filled with spicy paneer, crunchy veggies, lettuce.",
+    "image": ""
+  },
+  {
+    "id": "prod-2",
+    "name": "Classic Burger",
+    "price": 20,
+    "category": "Burgers",
+    "description": "Juicy patty, cheddar cheese, lettuce, tomato, onion, pickles.",
+    "image": ""
+  },
+  {
+    "id": "prod-3",
+    "name": "Farmhouse Pizza",
+    "price": 24,
+    "category": "Pizza",
+    "description": "Bell peppers, mushrooms, onions, corn, olives, tomato sauce.",
+    "image": ""
+  },
+  {
+    "id": "prod-4",
+    "name": "Classic Cold Coffee",
+    "price": 28,
+    "category": "Drinks",
+    "description": "Chilled coffee, milk, cream, ice, and chocolate drizzle.",
+    "image": ""
+  },
+  {
+    "id": "prod-5",
+    "name": "Margerita Pizza",
+    "price": 40,
+    "category": "Pizza",
+    "description": "Tomato sauce, mozzarella cheese, fresh basil, olive oil.",
+    "image": ""
+  },
+  {
+    "id": "prod-6",
+    "name": "Chocolate Brownie",
+    "price": 28,
+    "category": "Desserts",
+    "description": "Rich chocolate brownie served with chocolate sauce and soft fudge.",
+    "image": ""
+  },
+  {
+    "id": "prod-7",
+    "name": "Iced Lemon Tea",
+    "price": 25,
+    "category": "Drinks",
+    "description": "Refreshing chilled black tea infused with fresh lemon slices and mint leaves.",
+    "image": ""
+  },
+  {
+    "id": "prod-8",
+    "name": "Chicken Burger",
+    "price": 25,
+    "category": "Burgers",
+    "description": "Crispy chicken fillet, lettuce, cheese, mayo, tomato.",
+    "image": ""
+  },
+  {
+    "id": "prod-9",
+    "name": "Chicken Wrap",
+    "price": 22,
+    "category": "Wraps",
+    "description": "Grilled chicken, peri peri sauce, onions, lettuce, bell peppers.",
+    "image": ""
+  },
+  {
+    "id": "prod-11",
+    "name": "California Roll",
+    "price": 20,
+    "category": "Sushi Rolls",
+    "description": "Crab stick, avocado, cucumber, sushi rice, nori, and sesame topping.",
+    "image": ""
+  },
+  {
+    "id": "prod-12",
+    "name": "Classic Tiramisu",
+    "price": 28,
+    "category": "Desserts",
+    "description": "Coffee-soaked layers, mascarpone cream, cocoa dust, and soft sponge.",
+    "image": ""
+  }
+]
