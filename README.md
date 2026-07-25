@@ -1,88 +1,104 @@
-# 🍰 DREAM BAKES
+# Dream Elevates — Fullstack Rebuild
 
-Welcome to **DREAM BAKES** (formerly Kafe Milano template), a premium, fully responsive static website designed for modern bakeries, cafés, and food businesses. 
+A fullstack recreation of the Framer site (Kafe Milano / Dream Elevates template),
+built with **Next.js 14 (App Router)**, **Tailwind CSS**, **Framer Motion**
+(the same animation engine Framer itself uses), and **Supabase** as the cloud
+database.
 
-This website features smooth animations, elegant typography, interactive menu views, a reservation framework, blog posts, and dynamic layouts to deliver an outstanding customer experience.
+## What's real now (vs. the Framer version)
 
----
+- The **"Place Your Order"** form actually inserts a row into a Supabase
+  `orders` table instead of doing nothing.
+- The **newsletter box** in the footer inserts into a `newsletter_subscribers`
+  table.
+- The **menu grid** is data-driven — it reads from a `menu_items` table in
+  Supabase (falls back to hardcoded data if Supabase isn't configured yet, so
+  the site still looks right before you set up the DB).
+- All the original animations are recreated: hero crossfade slider, scroll
+  reveal on every section, staggered card grids, hover scale on cards/buttons,
+  sticky navbar with blur-on-scroll, animated mobile menu, animated form
+  success state.
 
-## 🚀 Live Demo
+## 1. Install dependencies
 
-Check out the live website here:
-👉 **[DREAM BAKES Live App](https://polite-professionals-014489.framer.app/)**
-
----
-
-## ✨ Features
-
-- **🍰 Beautiful & Aesthetic Design**: Modern dark/warm-toned palette tailored for bakeries and gourmet cafés.
-- **📱 Fully Responsive**: Pixel-perfect layout across desktop, tablet, and mobile devices.
-- **📅 Table Reservation Setup**: Fully integrated contact and booking forms.
-- **📜 Menu Showcase**: An elegant and readable menu categorized for drinks, bakes, and specials.
-- **✍️ Blog/News Section**: Rich blog pages containing stories, recipes, and updates.
-- **🎨 Framer-Powered Layout**: Re-created static HTML built with high-fidelity styles and typography.
-
----
-
-## 📂 Site Structure
-
-The project contains pre-rendered, SEO-optimized HTML pages structured as follows:
-
-```
-DREAM_BAKES/
-├── index.html           # Home Page
-├── menu/
-│   └── index.html       # Bakery & Cafe Menu Page
-├── about-us/
-│   └── index.html       # Our Story & Timeline
-├── contact/
-│   └── index.html       # Booking, Location & Contact Details
-├── style-guide/
-│   └── index.html       # UI Components & Style Reference
-├── blog/
-│   ├── index.html       # Blog Feed
-│   ├── balanced-meals-that-taste-as-good-as-they-look/
-│   ├── from-simple-recipes-to-signature-favorites/
-│   ├── the-secret-behind-our-wood-fired-pizza-crust/
-│   ├── how-we-craft-each-delicious-plate-with-care/
-│   ├── fresh-ingredients-make-the-difference-in-every-bite/
-│   └── blog-2-copy-2why-great-food-is-also-about-the-experience/
-└── README.md            # Project Documentation
-```
-
----
-
-## 🛠️ Technology Stack
-
-- **HTML5**: Structured semantic markup.
-- **CSS3**: Premium custom animations and styled components.
-- **JavaScript & React**: Client-side hydration and dynamic interactive elements.
-- **Framer**: Original design architecture and assets.
-
----
-
-## 💻 Running the Site Locally
-
-Since the site relies on client-side routing and relative linking, it is best served using a simple local web server:
-
-### Option 1: Using VS Code Live Server
-1. Open this folder in VS Code.
-2. Click **Go Live** at the bottom right corner of your editor window.
-
-### Option 2: Using Node.js (npx)
-Open your terminal in the project directory and run:
 ```bash
-npx serve
-# Or
-npx http-server
+npm install
 ```
 
----
+## 2. Create your Supabase project
 
-## 🤝 Contributing
+1. Go to https://supabase.com → New Project.
+2. Once it's created, open **SQL Editor → New query**, paste the contents of
+   `supabase/schema.sql`, and run it. This creates the `orders`,
+   `newsletter_subscribers`, and `menu_items` tables, sets Row Level Security
+   policies (public can insert orders/subscribers, but not read them back —
+   only you can via the Supabase dashboard), and seeds the menu items.
+3. Go to **Project Settings → API** and copy your **Project URL** and
+   **anon public key**.
 
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page or submit pull requests.
+## 3. Configure environment variables
 
-## 📝 License
+```bash
+cp .env.local.example .env.local
+```
 
-Distributed under the MIT License.
+Fill in:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+```
+
+## 4. Run it
+
+```bash
+npm run dev
+```
+
+Visit http://localhost:3000
+
+## 5. Viewing submitted orders / subscribers
+
+Supabase Dashboard → **Table Editor** → `orders` / `newsletter_subscribers`.
+(If you later want a proper in-app admin dashboard with auth, that's a clean
+next step — just ask.)
+
+## 6. Deploying
+
+Push this to GitHub and import it into **Vercel** (made by the Next.js team,
+zero-config for this stack). Add the same two env vars in
+Vercel → Project → Settings → Environment Variables.
+
+## Project structure
+
+```
+app/
+  layout.tsx        Root layout, fonts, Navbar/Footer wrapper
+  page.tsx           Home page
+  about-us/page.tsx
+  menu/page.tsx
+  contact/page.tsx
+  globals.css
+components/
+  Navbar.tsx          Sticky nav, blur on scroll, animated mobile menu
+  Hero.tsx            Autoplaying crossfade image carousel
+  About.tsx           Scroll-reveal story + stats
+  MenuGrid.tsx         Cake grid, reads from Supabase
+  OrderForm.tsx        Real form → Supabase `orders` table
+  Location.tsx         Map + address
+  Footer.tsx            Newsletter signup → Supabase `newsletter_subscribers`
+lib/
+  supabaseClient.ts   Supabase browser client
+  motion.ts            Shared Framer Motion variants
+supabase/
+  schema.sql            Run this once in the Supabase SQL editor
+```
+
+## Notes
+
+- Images are currently pulled from the original template's CDN
+  (`framerusercontent.com`) so the site looks identical out of the box. Swap
+  these for your own photos in `components/*.tsx` and `supabase/schema.sql`
+  whenever you're ready — no code restructuring needed.
+- All content (copy, prices, cake names) matches the original site; edit
+  freely, it's now just plain React/JSX.

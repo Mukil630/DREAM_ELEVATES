@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function() {
+  function fixTextNode(node) {
+    if (!node) return;
+    if (node.nodeType === 3) {
+      if (node.nodeValue && /dream\s*bakes/i.test(node.nodeValue)) {
+        node.nodeValue = node.nodeValue
+          .replace(/DREAM BAKES/g, 'DREAM ELEVATES')
+          .replace(/Dream Bakes/g, 'Dream Elevates')
+          .replace(/dream bakes/g, 'dream elevates')
+          .replace(/DREAMBAKES/g, 'DREAMELEVATES')
+          .replace(/DreamBakes/g, 'DreamElevates');
+      }
+    } else if (node.nodeType === 1) {
+      const tag = node.tagName ? node.tagName.toUpperCase() : '';
+      if (tag !== 'SCRIPT' && tag !== 'STYLE' && tag !== 'TEXTAREA') {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          fixTextNode(node.childNodes[i]);
+        }
+      }
+    }
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (let i = 0; i < mutations.length; i++) {
+      const m = mutations[i];
+      if (m.type === 'childList') {
+        for (let j = 0; j < m.addedNodes.length; j++) {
+          fixTextNode(m.addedNodes[j]);
+        }
+      } else if (m.type === 'characterData') {
+        fixTextNode(m.target);
+      }
+    }
+  });
+
+  function start() {
+    if (document.body) {
+      fixTextNode(document.body);
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<script>
+(function() {
+  function fixNode(node) {
+    if (!node) return;
+    if (node.nodeType === 3) {
+      if (node.nodeValue && /dream\s*bakes/i.test(node.nodeValue)) {
+        node.nodeValue = node.nodeValue
+          .replace(/DREAM ELEVATES/g, 'DREAM ELEVATES')
+          .replace(/Dream Elevates/g, 'Dream Elevates')
+          .replace(/dream elevates/g, 'dream elevates')
+          .replace(/DREAMBAKES/g, 'DREAMELEVATES')
+          .replace(/DreamElevates/g, 'DreamElevates');
+      }
+    } else if (node.nodeType === 1) {
+      const tag = node.tagName ? node.tagName.toUpperCase() : '';
+      if (tag !== 'SCRIPT' && tag !== 'STYLE' && tag !== 'TEXTAREA') {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          fixNode(node.childNodes[i]);
+        }
+      }
+    }
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (let i = 0; i < mutations.length; i++) {
+      const m = mutations[i];
+      if (m.type === 'childList') {
+        for (let j = 0; j < m.addedNodes.length; j++) {
+          fixNode(m.addedNodes[j]);
+        }
+      } else if (m.type === 'characterData') {
+        fixNode(m.target);
+      }
+    }
+  });
+
+  function init() {
+    if (document.body) {
+      fixNode(document.body);
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dream Elevates — Admin Management Hub</title>
+  <!-- Google Fonts: Playfair Display & DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- BACKGROUND GRADIENTS -->
+  <div class="glass-bg-accent-1"></div>
+  <div class="glass-bg-accent-2"></div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <div id="login-container" class="login-wrapper">
+    <div class="glass-card login-card">
+      <div class="brand">
+        <h2>DREAM ELEVATES</h2>
+        <p>Administration Hub</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="admin-password">Enter Admin Password</label>
+          <input type="password" id="admin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Authenticate</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN DASHBOARD PANEL ==================== -->
+  <div id="admin-panel" class="panel-wrapper hidden">
+    <!-- HEADER -->
+    <header class="panel-header">
+      <div class="header-brand">
+        <h1>DREAM ELEVATES <span>Admin Portal</span></h1>
+        <p>Manage catalog inventory, track custom cake orders, and manage customers</p>
+      </div>
+      <div class="header-actions">
+        <span class="user-indicator">👑 Store Manager</span>
+        <button id="logout-btn" class="btn btn-secondary">Log Out</button>
+      </div>
+    </header>
+
+    <!-- METRICS GRID -->
+    <section class="metrics-grid">
+      <div class="glass-card metric-card">
+        <div class="metric-info">
+          <h3>Total Products</h3>
+          <span id="metric-total-count" class="metric-value">0</span>
+        </div>
+        <div class="metric-icon">🍰</div>
+      </div>
+      <div class="glass-card metric-card">
+        <div class="metric-info">
+          <h3>Pending Orders</h3>
+          <span id="metric-pending-orders" class="metric-value">0</span>
+        </div>
+        <div class="metric-icon">⏳</div>
+      </div>
+      <div class="glass-card metric-card">
+        <div class="metric-info">
+          <h3>Customers</h3>
+          <span id="metric-total-customers" class="metric-value">0</span>
+        </div>
+        <div class="metric-icon">👥</div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD SUB-NAVIGATION TABS -->
+    <div class="dashboard-tabs-wrapper">
+      <button id="tab-btn-catalog" class="dashboard-tab active" data-tab="catalog">📦 Catalog Inventory</button>
+      <button id="tab-btn-orders" class="dashboard-tab" data-tab="orders">🛒 Customer Orders <span id="orders-badge" class="badge hidden">0</span></button>
+      <button id="tab-btn-users" class="dashboard-tab" data-tab="users">👥 Customer Profiles</button>
+    </div>
+
+    <!-- ==================== CATALOG INVENTORY TAB ==================== -->
+    <main id="tab-content-catalog" class="panel-content glass-card">
+      <div class="content-header">
+        <h2>Baking & Cafe Products</h2>
+        <button id="add-product-btn" class="btn btn-primary">+ Add New Item</button>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="filter-wrapper">
+        <button class="filter-tab active" data-category="All">All Items</button>
+        <button class="filter-tab" data-category="Bakeware">Bakeware</button>
+        <button class="filter-tab" data-category="Prep Tools">Prep Tools</button>
+        <button class="filter-tab" data-category="Decorating">Decorating</button>
+        <button class="filter-tab" data-category="Accessories">Accessories</button>
+        <button class="filter-tab" data-category="Packaging">Packaging</button>
+        <button class="filter-tab" data-category="Ingredients">Ingredients</button>
+      </div>
+
+      <!-- PRODUCTS TABLE -->
+      <div class="table-wrapper">
+        <table id="products-table">
+          <thead>
+            <tr>
+              <th width="85">Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th width="150" style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-list">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+        <div id="no-products-msg" class="empty-state hidden">
+          <p>No products found in this category.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== CUSTOMER ORDERS TAB ==================== -->
+    <main id="tab-content-orders" class="panel-content glass-card hidden">
+      <div class="content-header">
+        <h2>Customer Order List</h2>
+        <div class="order-controls">
+          <select id="order-filter-status" class="form-select-sm">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Ready">Ready</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ORDERS TABLE -->
+      <div class="table-wrapper">
+        <table id="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Type</th>
+              <th>Details & Specifications</th>
+              <th>Requested Delivery</th>
+              <th>Status</th>
+              <th width="100" style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-list">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+        <div id="no-orders-msg" class="empty-state hidden">
+          <p>No orders found matching the filter.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== CUSTOMER PROFILES TAB ==================== -->
+    <main id="tab-content-users" class="panel-content glass-card hidden">
+      <div class="content-header">
+        <h2>Customer Profiles</h2>
+        <button id="add-user-btn" class="btn btn-primary">+ Add New Customer</button>
+      </div>
+
+      <!-- CUSTOMERS TABLE -->
+      <div class="table-wrapper">
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>WhatsApp Phone</th>
+              <th>Email Address</th>
+              <th>Delivery Address</th>
+              <th width="240" style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-list">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+        <div id="no-users-msg" class="empty-state hidden">
+          <p>No customer profiles found.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== PRODUCT FORM MODAL ==================== -->
+  <div id="product-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Menu Item</h2>
+        <span class="modal-close" id="product-modal-close">&times;</span>
+      </div>
+      <form id="product-form">
+        <input type="hidden" id="product-id">
+        
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="product-name">Item Name</label>
+            <input type="text" id="product-name" placeholder="e.g. Sourdough Loaf" required>
+          </div>
+          <div class="form-group flex-1">
+            <label for="product-price">Price ($)</label>
+            <input type="number" id="product-price" placeholder="e.g. 8.50" step="0.01" min="0" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="product-category">Category</label>
+            <select id="product-category" required>
+              <option value="Bakeware">Bakeware</option>
+              <option value="Prep Tools">Prep Tools</option>
+              <option value="Decorating">Decorating</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Packaging">Packaging</option>
+              <option value="Ingredients">Ingredients</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="product-desc">Description</label>
+          <textarea id="product-desc" rows="3" placeholder="Describe the item..."></textarea>
+        </div>
+
+        <!-- IMAGE MANAGEMENT -->
+        <div class="form-group">
+          <label>Item Image</label>
+          <div class="image-upload-wrapper">
+            <!-- Image Preview Box -->
+            <div id="image-preview" class="image-preview-box">
+              <span class="placeholder-text">No Image Selected</span>
+            </div>
+            <!-- Upload Controls -->
+            <div class="upload-controls">
+              <div class="file-input-wrapper">
+                <button type="button" class="btn btn-secondary">Upload Image</button>
+                <input type="file" id="image-file" accept="image/*">
+              </div>
+              <p class="separator-text">or paste image URL</p>
+              <input type="text" id="product-image-url" placeholder="https://unsplash.com/photo-...">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel" id="product-modal-cancel">Cancel</button>
+          <button type="submit" id="save-product-btn" class="btn btn-primary">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== CUSTOMER FORM MODAL ==================== -->
+  <div id="user-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 id="user-modal-title">Add Customer Account</h2>
+        <span class="modal-close" id="user-modal-close">&times;</span>
+      </div>
+      <form id="user-form">
+        <input type="hidden" id="user-id">
+        
+        <div class="form-group">
+          <label for="user-name">Full Name</label>
+          <input type="text" id="user-name" placeholder="e.g. Mukil" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="user-phone">WhatsApp Phone</label>
+            <input type="text" id="user-phone" placeholder="e.g. 9788633200" required>
+          </div>
+          <div class="form-group flex-1">
+            <label for="user-password">Account Password</label>
+            <input type="text" id="user-password" placeholder="e.g. secret123" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="user-email">Email Address</label>
+          <input type="email" id="user-email" placeholder="e.g. mukil@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="user-address">Delivery Address</label>
+          <textarea id="user-address" rows="2" placeholder="e.g. 123 Baker Street"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel" id="user-modal-cancel">Cancel</button>
+          <button type="submit" id="save-user-btn" class="btn btn-primary">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -5,7 +5,7 @@
   const API_BASE = window.location.origin; // Dynamically use host (e.g. http://localhost:3000)
   
   // State
-  let currentUser = JSON.parse(localStorage.getItem('dreambakes_user')) || null;
+  let currentUser = JSON.parse(localStorage.getItem('dreamelevates_user')) || null;
   let activeTab = 'login'; // 'login' | 'register'
   
   // Load stylesheet dynamically
@@ -28,7 +28,7 @@
       <div id="rewards-drawer-overlay" class="rewards-drawer-overlay"></div>
       <div id="rewards-drawer" class="rewards-drawer">
         <div class="rewards-drawer-header">
-          <h2 id="rewards-drawer-title">🍰 Bakes Club</h2>
+          <h2 id="rewards-drawer-title">🍰 Elevates Club</h2>
           <span id="rewards-drawer-close" class="rewards-drawer-close">&times;</span>
         </div>
         
@@ -147,10 +147,10 @@
       if (res.ok) {
         const freshData = await res.json();
         currentUser = freshData;
-        localStorage.setItem('dreambakes_user', JSON.stringify(freshData));
+        localStorage.setItem('dreamelevates_user', JSON.stringify(freshData));
         
         // Custom event for order auto-fill page compatibility
-        window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: freshData }));
+        window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: freshData }));
         syncHeaderLink();
       }
     } catch (e) {
@@ -180,7 +180,7 @@
     container.innerHTML = `
       <div style="padding-top: 10px;">
         <p style="margin-bottom: 24px; font-size: 0.9rem; line-height: 1.5;">
-          Join the <strong>Bakes Club</strong> to claim daily points, unlock exclusive custom discount coupons, and track your baking orders!
+          Join the <strong>Elevates Club</strong> to claim daily points, unlock exclusive custom discount coupons, and track your baking orders!
         </p>
         
         <form id="rewards-login-form">
@@ -230,9 +230,9 @@
         
         if (res.ok) {
           currentUser = data;
-          localStorage.setItem('dreambakes_user', JSON.stringify(data));
-          showDrawerToast('Welcome back to Bakes Club!');
-          window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: data }));
+          localStorage.setItem('dreamelevates_user', JSON.stringify(data));
+          showDrawerToast('Welcome back to Elevates Club!');
+          window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: data }));
           syncHeaderLink();
           renderDrawerContent();
         } else {
@@ -321,9 +321,9 @@
         
         if (res.ok) {
           currentUser = data;
-          localStorage.setItem('dreambakes_user', JSON.stringify(data));
-          showDrawerToast('Account created! Welcome to Bakes Club!');
-          window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: data }));
+          localStorage.setItem('dreamelevates_user', JSON.stringify(data));
+          showDrawerToast('Account created! Welcome to Elevates Club!');
+          window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: data }));
           syncHeaderLink();
           renderDrawerContent();
         } else {
@@ -528,7 +528,7 @@
         </div>
         
         <!-- Logout Button -->
-        <button id="rewards-logout-btn" class="rewards-btn" style="background:#6e6458; opacity:0.8; margin-top:30px;">Log Out of Bakes Club</button>
+        <button id="rewards-logout-btn" class="rewards-btn" style="background:#6e6458; opacity:0.8; margin-top:30px;">Log Out of Elevates Club</button>
       </div>
     `;
     
@@ -550,13 +550,13 @@
           
           if (res.ok) {
             currentUser = data.profile;
-            localStorage.setItem('dreambakes_user', JSON.stringify(currentUser));
+            localStorage.setItem('dreamelevates_user', JSON.stringify(currentUser));
             showDrawerToast(`+${data.pointsEarned} Points Claimed! Streak: Day ${data.streakDay}`);
             
             // Fire confetti!
             triggerConfetti();
             
-            window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: currentUser }));
+            window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: currentUser }));
             syncHeaderLink();
             
             // Re-render
@@ -594,13 +594,13 @@
           
           if (res.ok) {
             currentUser = data.profile;
-            localStorage.setItem('dreambakes_user', JSON.stringify(currentUser));
+            localStorage.setItem('dreamelevates_user', JSON.stringify(currentUser));
             showDrawerToast(`Coupon Claimed! Code: ${data.code}`);
             
             // Fire confetti!
             triggerConfetti();
             
-            window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: currentUser }));
+            window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: currentUser }));
             syncHeaderLink();
             renderDrawerContent();
           } else {
@@ -638,9 +638,9 @@
     // Bind Logout Button
     document.getElementById('rewards-logout-btn').addEventListener('click', () => {
       currentUser = null;
-      localStorage.removeItem('dreambakes_user');
-      showDrawerToast('Logged out of Bakes Club');
-      window.dispatchEvent(new CustomEvent('dreambakes_user_updated', { detail: null }));
+      localStorage.removeItem('dreamelevates_user');
+      showDrawerToast('Logged out of Elevates Club');
+      window.dispatchEvent(new CustomEvent('dreamelevates_user_updated', { detail: null }));
       syncHeaderLink();
       renderDrawerContent();
     });

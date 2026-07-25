@@ -2,14 +2,64 @@
 <!-- Made in Framer Â· framer.com â¨ -->
 <!-- Published Jul 19, 2026, 7:30 AM UTC -->
 <html lang="en" data-redirect-timezone="1" dir="ltr">
-<head>
+<head>
+<script>
+(function() {
+  function fixTextNode(node) {
+    if (!node) return;
+    if (node.nodeType === 3) {
+      if (node.nodeValue && /dream\s*bakes/i.test(node.nodeValue)) {
+        node.nodeValue = node.nodeValue
+          .replace(/DREAM BAKES/g, 'DREAM ELEVATES')
+          .replace(/Dream Bakes/g, 'Dream Elevates')
+          .replace(/dream bakes/g, 'dream elevates')
+          .replace(/DREAMBAKES/g, 'DREAMELEVATES')
+          .replace(/DreamBakes/g, 'DreamElevates');
+      }
+    } else if (node.nodeType === 1) {
+      const tag = node.tagName ? node.tagName.toUpperCase() : '';
+      if (tag !== 'SCRIPT' && tag !== 'STYLE' && tag !== 'TEXTAREA') {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          fixTextNode(node.childNodes[i]);
+        }
+      }
+    }
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (let i = 0; i < mutations.length; i++) {
+      const m = mutations[i];
+      if (m.type === 'childList') {
+        for (let j = 0; j < m.addedNodes.length; j++) {
+          fixTextNode(m.addedNodes[j]);
+        }
+      } else if (m.type === 'characterData') {
+        fixTextNode(m.target);
+      }
+    }
+  });
+
+  function start() {
+    if (document.body) {
+      fixTextNode(document.body);
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=720">
 	<meta name="generator" content="Framer e0e363b">
 	<title>Kafe Milano - The Premium Food Cafe Framer Template</title>
     <meta name="description" content="Kafe Milano is a premium Framer template for cafÃ©s, restaurants, and food businesses, featuring menus, reservations, blogs, and responsive pages.">
-    <meta name="framer-search-index" content="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/searchIndex-e4lqAWp4tkC3.json">
-    <meta name="framer-search-index-fallback" content="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/searchIndex-FGgbWk5LTTGL.json">
+    <meta name="framer-search-index" content="/framer-js/searchIndex-e4lqAWp4tkC3.json">
+    <meta name="framer-search-index-fallback" content="/framer-js/searchIndex-FGgbWk5LTTGL.json">
     <link href="https://framerusercontent.com/images/yEL6rbQuKv1BFbc127ZpjT9W52s.png" rel="icon" media="(prefers-color-scheme: light)">
     <link href="https://framerusercontent.com/images/P1spT3AZN1YfiB3bHjqDBsnIsE.png" rel="icon" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="https://framerusercontent.com/images/gIfKLFHAYa3vIbowlR54MCq7E.png">
@@ -25,8 +75,8 @@
     <meta name="twitter:image" content="https://framerusercontent.com/assets/ruhELyYBlZaiDnmWNzXGGpxxFeg.png">
 	
 	
-	<script>try{if(localStorage.getItem("__framer_force_showing_editorbar_since")){const n=document.createElement("link");n.rel="modulepreload";n.href="https://framer.com/edit/init.mjs";document.head.appendChild(n)}}catch(e){}</script>
-	<link rel="canonical" href="https://polite-professionals-014489.framer.app/style-guide"><meta property="og:url" content="https://polite-professionals-014489.framer.app/style-guide"><!-- Start of headStart -->
+	
+	<link rel="canonical" href="/style-guide"><meta property="og:url" content="/style-guide"><!-- Start of headStart -->
     
     <!-- End of headStart -->
 	
@@ -145,7 +195,7 @@
 	
 </head>
 <body>
-	<script async src="https://events.framer.com/script?v=2" data-fid="f2d508ddbcb1f08c10759d51d787ef34b7d753eb6297a18a6a7bd60461971ff4" data-no-nt></script>
+	
 	<!-- Start of bodyStart -->
     
     <!-- End of bodyStart -->
@@ -157,7 +207,7 @@
 	<div id="__framer-badge-container"><!--$--><!--$--><!--$--><a class="framer-6jWyo framer-n0ccwk framer-v-n0ccwk framer-bmpgw8 __framer-badge" data-framer-appear-id="n0ccwk" data-framer-name="Light" data-nosnippet="true" style="will-change:transform;pointer-events:auto;opacity:0.001;transform:translateY(10px)" href="https://www.framer.com" rel="noopener" title="Create a free website with Framer, the website builder loved by startups, designers and agencies."><div class="framer-13yxzio" data-framer-name="Backdrop" style="background-color:rgb(255, 255, 255);border-bottom-left-radius:10px;border-bottom-right-radius:10px;border-top-left-radius:10px;border-top-right-radius:10px;box-shadow:0px 0.6021873017743928px 1.5656869846134214px -1.5px rgba(0, 0, 0, 0.17), 0px 2.288533303243457px 5.950186588432988px -3px rgba(0, 0, 0, 0.14), 0px 10px 26px -4.5px rgba(0, 0, 0, 0.02)"></div><div class="framer-19yaanm" data-framer-name="Content" style="transform:translate(-50%, -50%)"><div class="framer-1kflzx5"><div data-framer-name="Logo" class="framer-hcsc7 framer-e50co" style="--1bd4d3i:rgb(0, 0, 0);--otdjsv:rgb(0, 0, 0);transform:translateX(-50%)"></div></div><!--$--><p style="position:absolute;transform:scale(0.001)">Create a free website with Framer, the website builder loved by startups, designers and agencies.</p><div data-framer-name="Text" class="framer-g7oZR framer-1um7t9d" style="--1bd4d3i:rgb(0, 0, 0);--otdjsv:rgb(0, 0, 0)"></div><!--/$--></div><div class="framer-j4ugry" data-framer-name="Bottom" style="mask:linear-gradient(180deg, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 100%) add;-webkit-mask:linear-gradient(180deg, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 100%) add;border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-top-left-radius:11px;border-top-right-radius:11px;box-shadow:inset 0px 0px 0px 1px rgb(0, 0, 0);opacity:0.06"></div><div class="framer-jnuwbw" data-framer-name="Border" style="border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-top-left-radius:11px;border-top-right-radius:11px;box-shadow:inset 0px 0px 0px 1px rgb(0, 0, 0);opacity:0.04"></div></a><!--/$--><!--/$--><!--/$--></div>
 	<script data-framer-appear-animation="no-preference"></script>
 	<script>typeof document<"u"&&(window.process={...window.process,env:{...window.process?.env,NODE_ENV:"production"}});</script>
-	<link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/rolldown-runtime.Dh6celcD.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/react.D20wc1Tc.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/motion.D12w2Jik.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/framer.BMvNWovO.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/SP4n0DCbm.COTpVNcZ.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/shared-lib.Zb8KNw5G.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/eMztRYTJV.D42sb8VG.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/X4faiQzAQ.DboXMRw2.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/cCUz7KsvU.DFvaUMGX.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/IhrCz9ivM.DmzhMFGA.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/JRMSsQQ10.BwdhMcHP.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/tHavo1cVe.C8zb3IbS.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/WjvtrLxOs.ByREKzqB.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/FndEbgm3SYRzD4xwaFRQomKA42DaY01JWMx-0k5AOl4.L3TTuRwP.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/dpigOvJB_.DE_M1icS.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/a7nXSx2Lw.CSW35wS-.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/dBmF5BQt7.BwzFbMsx.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/vgiPqV3oM.B8V_ygPT.mjs"><link rel="modulepreload" fetchpriority="low" href="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/9hrB6zd4hBp2QNXVHpcAuyMXYnM6ThHKZv_tufMX5NI.84JB5IjW.mjs"><script type="module" async data-framer-bundle="main" fetchPriority="low" src="https://framerusercontent.com/sites/6eJvaEFdBx9KzaE0aRp9nM/script_main.Dgsl-FAA.mjs"></script><div id="svg-templates" style="position: absolute; overflow: hidden; bottom: 0; left: 0; width: 0; height: 0; z-index: 0; contain: strict" aria-hidden="true">
+	<link rel="modulepreload" fetchpriority="low" href="/framer-js/rolldown-runtime.Dh6celcD.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/react.D20wc1Tc.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/motion.D12w2Jik.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/framer.BMvNWovO.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/SP4n0DCbm.COTpVNcZ.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/shared-lib.Zb8KNw5G.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/eMztRYTJV.D42sb8VG.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/X4faiQzAQ.DboXMRw2.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/cCUz7KsvU.DFvaUMGX.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/IhrCz9ivM.DmzhMFGA.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/JRMSsQQ10.BwdhMcHP.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/tHavo1cVe.C8zb3IbS.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/WjvtrLxOs.ByREKzqB.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/FndEbgm3SYRzD4xwaFRQomKA42DaY01JWMx-0k5AOl4.L3TTuRwP.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/dpigOvJB_.DE_M1icS.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/a7nXSx2Lw.CSW35wS-.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/dBmF5BQt7.BwzFbMsx.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/vgiPqV3oM.B8V_ygPT.mjs"><link rel="modulepreload" fetchpriority="low" href="/framer-js/9hrB6zd4hBp2QNXVHpcAuyMXYnM6ThHKZv_tufMX5NI.84JB5IjW.mjs"><script type="module" async data-framer-bundle="main" fetchPriority="low" src="/framer-js/script_main.Dgsl-FAA.mjs"></script><div id="svg-templates" style="position: absolute; overflow: hidden; bottom: 0; left: 0; width: 0; height: 0; z-index: 0; contain: strict" aria-hidden="true">
 <svg viewBox="0 0 634 58" overflow="visible" id="svg-1758883763_412"><path d="M 0 14 C 0 6.268 6.268 0 14 0 L 620 0 C 627.732 0 634 6.268 634 14 L 634 44 C 634 51.732 627.732 58 620 58 L 14 58 C 6.268 58 0 51.732 0 44 Z" fill="var(--token-9ddfde5e-3cfa-4b2e-b97c-ef1b840d096e, rgb(255, 255, 255)) /* {&quot;name&quot;:&quot;Card Font&quot;} */"/></svg>
 <svg viewBox="0 0 100 100" overflow="visible" id="svg-386171743_416"><path d="M 0 18 C 0 8.059 8.059 0 18 0 L 82 0 C 91.941 0 100 8.059 100 18 L 100 82 C 100 91.941 91.941 100 82 100 L 18 100 C 8.059 100 0 91.941 0 82 Z" fill="var(--token-b3cf3b71-d915-40e0-b838-c43ae018c7be, rgb(227, 140, 54)) /* {&quot;name&quot;:&quot;Primary Color&quot;} */"/></svg>
 <svg viewBox="0 0 100 100" overflow="visible" id="svg-381589369_547"><path d="M 0 18 C 0 8.059 8.059 0 18 0 L 82 0 C 91.941 0 100 8.059 100 18 L 100 82 C 100 91.941 91.941 100 82 100 L 18 100 C 8.059 100 0 91.941 0 82 Z" fill="var(--token-0f22286f-9f4f-48c5-86f5-1decf4e54975, rgb(67, 36, 5)) /* {&quot;name&quot;:&quot;Accent Color&quot;} */" stroke="var(--token-c969bef9-52a9-40e0-a7a3-0b5cf07d1442, rgba(227, 141, 54, 0.21)) /* {&quot;name&quot;:&quot;Border Color&quot;} */"/></svg>

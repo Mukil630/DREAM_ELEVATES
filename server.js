@@ -33,8 +33,11 @@ if (!fs.existsSync(USERS_FILE)) {
   fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2), 'utf8');
 }
 
-// Serve uploaded images static route
-app.use('/uploads', express.static(UPLOADS_DIR));
+// Serve uploaded images and local framer JS scripts static routes
+app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '1d' }));
+app.use('/framer-js', express.static(path.join(__dirname, 'framer-js'), { maxAge: '1d', etag: true }));
+
+
 
 // --- Multer Image Upload Configuration ---
 const storage = multer.diskStorage({
@@ -63,7 +66,7 @@ const upload = multer({
 });
 
 // --- Admin Authentication ---
-const ADMIN_TOKEN = "dreambakes-admin-secure-token-2026";
+const ADMIN_TOKEN = "dreamelevates-admin-secure-token-2026";
 const ADMIN_PASS = "admin123";
 
 function requireAdminAuth(req, res, next) {
@@ -479,7 +482,46 @@ app.delete('/api/admin/users/:id', requireAdminAuth, (req, res) => {
 // 1. Get all products
 app.get('/api/products', (req, res) => {
   const products = readJsonFile(PRODUCTS_FILE);
-  res.json(products);
+  const normalized = products.map((item, idx) => {
+    const img = item.image || item.image_url || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800';
+    const priceLabel = item.price_label || (item.price ? `₹${item.price}` : '₹799');
+    const numPrice = typeof item.price === 'number' ? item.price : (parseFloat(priceLabel.replace(/[^0-9.]/g, '')) || 799);
+    return {
+      ...item,
+      id: item.id || `prod_${idx}`,
+      name: item.name || 'Gourmet Cake',
+      price: numPrice,
+      price_label: priceLabel,
+      image: img,
+      image_url: img,
+      category: item.category || 'Custom Cakes',
+      description: item.description || ''
+    };
+  });
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
+  res.json(normalized);
+});
+
+app.get('/api/menu-items', (req, res) => {
+  const products = readJsonFile(PRODUCTS_FILE);
+  const normalized = products.map((item, idx) => {
+    const img = item.image || item.image_url || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800';
+    const priceLabel = item.price_label || (item.price ? `₹${item.price}` : '₹799');
+    const numPrice = typeof item.price === 'number' ? item.price : (parseFloat(priceLabel.replace(/[^0-9.]/g, '')) || 799);
+    return {
+      ...item,
+      id: item.id || `prod_${idx}`,
+      name: item.name || 'Gourmet Cake',
+      price: numPrice,
+      price_label: priceLabel,
+      image: img,
+      image_url: img,
+      category: item.category || 'Custom Cakes',
+      description: item.description || ''
+    };
+  });
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
+  res.json(normalized);
 });
 
 // 2. Add product (Admin only)
@@ -747,7 +789,7 @@ app.get('*', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`\n========================================================`);
-  console.log(`🍰 DREAM BAKES API & Static Web Server running locally!`);
+  console.log(`🍰 DREAM ELEVATES API & Static Web Server running locally!`);
   console.log(`👉 Access URL: http://localhost:${PORT}`);
   console.log(`👉 Admin Panel: http://localhost:${PORT}/admin/`);
   console.log(`========================================================\n`);
