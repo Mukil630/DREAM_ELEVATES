@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MenuItem } from "@/app/api/menu-items/route";
 
-const validPasswords = ["DreamElivate", "DreamElevate", "admin123", "8883338935"];
+const validPasswords = ["DreamElevate@1603"];
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -158,24 +158,12 @@ export default function AdminPage() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-[#C9A15A] uppercase mb-1">
-                Admin Email / Phone
-              </label>
-              <input
-                type="text"
-                readOnly
-                value="dreamelevate4@gmail.com (8883338935)"
-                className="w-full rounded-xl border border-[#FBF3EA]/20 bg-[#24130A]/60 px-4 py-2.5 text-xs text-[#FBF3EA]/80 outline-none cursor-not-allowed"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#C9A15A] uppercase mb-1">
                 Admin Password *
               </label>
               <input
                 type="password"
                 required
-                placeholder="Enter password (admin123)"
+                placeholder="Enter Admin Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-[#C9A15A]/30 bg-[#24130A] px-4 py-3 text-sm text-[#FBF3EA] outline-none focus:border-[#C9A15A] transition-colors"
