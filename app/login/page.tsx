@@ -148,7 +148,7 @@ export default function LoginPage() {
               <input
                 type="text"
                 required
-                placeholder="e.g. 9080030538 or name@domain.com"
+                placeholder="e.g. 8883338935 or name@domain.com"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full rounded-xl border border-[#3B2417]/20 bg-white/80 px-4 py-3 text-sm outline-none focus:border-[#B5476B] focus:ring-2 focus:ring-[#B5476B]/20 transition-all shadow-inner"

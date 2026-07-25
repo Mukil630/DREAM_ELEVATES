@@ -134,7 +134,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, title }: AuthMod
               <input
                 type="tel"
                 required
-                placeholder="e.g. 9080030538"
+                placeholder="e.g. 8883338935"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full rounded-xl border border-[#3B2417]/20 bg-white/80 px-4 py-2.5 text-sm outline-none focus:border-[#B5476B] transition-colors"

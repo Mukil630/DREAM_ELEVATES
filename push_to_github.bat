@@ -1,6 +1,6 @@
 @echo off
 echo ==========================================
-echo Pushing Dream Bakes code to GitHub...
+echo Pushing DREAM_ELEVATES code to GitHub...
 echo ==========================================
 cd /d "%~dp0"
 git push -u origin main

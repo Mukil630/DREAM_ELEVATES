@@ -48,12 +48,12 @@ export default function Footer() {
             <p>
               📸 Instagram:{" "}
               <a
-                href="https://www.instagram.com/dream_elevate/"
+                href="https://www.instagram.com/dreamelevate_hubzz/"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[#C9A15A] hover:underline font-bold"
               >
-                @dream_elevate
+                @dreamelevate_hubzz
               </a>
             </p>
             <p>
@@ -114,7 +114,7 @@ export default function Footer() {
       <div className="border-t border-[#FBF3EA]/10">
         <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FBF3EA]/50 gap-2">
           <p>© {new Date().getFullYear()} DREAM ELEVATES. All rights reserved.</p>
-          <p>Instagram: @dream_elevate | Contact: 8883338935</p>
+          <p>Instagram: @dreamelevate_hubzz | Contact: 8883338935</p>
         </div>
       </div>
     </motion.footer>

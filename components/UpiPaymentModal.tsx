@@ -37,7 +37,7 @@ export default function UpiPaymentModal({
   item,
   customer,
   adminUpiId = "djammu03@okaxis",
-  adminPhone = "919080030538",
+  adminPhone = "918883338935",
 }: Props) {
   const [copied, setCopied] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);

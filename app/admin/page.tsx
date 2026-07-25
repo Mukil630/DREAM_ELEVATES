@@ -242,7 +242,7 @@ export default function AdminPage() {
               <h2 className="font-display italic text-lg font-bold text-[#C9A15A]">Admin UPI &amp; WhatsApp Order Verification</h2>
             </div>
             <p className="text-xs text-[#FBF3EA]/80 mt-1 max-w-2xl">
-              Customer payments go directly to Admin UPI: <strong className="text-[#C9A15A] font-mono">djammu03@okaxis</strong>. When an order is placed, customer automatically sends receipt to Admin WhatsApp (<strong className="text-[#C9A15A]">9080030538 / 8883338935</strong>) asking you to verify payment &amp; confirm order.
+              Customer payments go directly to Admin UPI: <strong className="text-[#C9A15A] font-mono">djammu03@okaxis</strong>. When an order is placed, customer automatically sends receipt to Admin WhatsApp (<strong className="text-[#C9A15A]">8883338935</strong>) asking you to verify payment &amp; confirm order.
             </p>
           </div>
           <div className="flex items-center gap-2 bg-[#24130A] px-4 py-2 rounded-xl border border-[#C9A15A]/40 text-xs font-semibold text-[#C9A15A]">

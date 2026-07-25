@@ -150,7 +150,7 @@ export default function OrderForm() {
                 Order Sent to Admin WhatsApp!
               </h3>
               <p className="text-[#5A3826] mt-2 text-sm max-w-md mx-auto">
-                Your order details have been formatted and sent directly to our admin team via WhatsApp (9080030538). We will confirm your order shortly!
+                Your order details have been formatted and sent directly to our admin team via WhatsApp (8883338935). We will confirm your order shortly!
               </p>
               <button
                 onClick={() => setStatus("idle")}
