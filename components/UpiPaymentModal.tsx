@@ -46,7 +46,7 @@ export default function UpiPaymentModal({
 
   // Extract numeric price for UPI amount calculation
   const numericPrice = parseFloat(item.price.replace(/[^0-9.]/g, "")) || 999;
-  const upiPayUrl = `upi://pay?pa=${encodeURIComponent(adminUpiId)}&pn=DreamElevatesAdmin&am=${numericPrice}&cu=INR&tn=${encodeURIComponent("Order_" + item.name)}`;
+  const upiPayUrl = `upi://pay?pa=${encodeURIComponent(adminUpiId)}&pn=DreamElevateAdmin&am=${numericPrice}&cu=INR&tn=${encodeURIComponent("Order_" + item.name)}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiPayUrl)}`;
 
   function handleCopyUpi() {

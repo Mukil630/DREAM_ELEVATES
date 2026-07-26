@@ -4,7 +4,7 @@ let orders = [];
 let users = [];
 let activeCategory = 'All';
 let activeOrderFilterStatus = 'All';
-let adminToken = sessionStorage.getItem('dreamelevates_admin_token');
+let adminToken = sessionStorage.getItem('dreamelevate_admin_token');
 let currentTab = 'catalog'; // 'catalog' | 'orders' | 'users'
 
 const API_BASE = "http://localhost:3000";
@@ -160,7 +160,7 @@ loginForm.addEventListener('submit', async (e) => {
 
     if (res.ok && data.success) {
       adminToken = data.token;
-      sessionStorage.setItem('dreamelevates_admin_token', adminToken);
+      sessionStorage.setItem('dreamelevate_admin_token', adminToken);
       showToast('Authenticated successfully!');
       showDashboard();
     } else {
@@ -175,7 +175,7 @@ loginForm.addEventListener('submit', async (e) => {
 // --- LOGOUT HANDLER ---
 logoutBtn.addEventListener('click', () => {
   adminToken = null;
-  sessionStorage.removeItem('dreamelevates_admin_token');
+  sessionStorage.removeItem('dreamelevate_admin_token');
   showToast('Logged out');
   showLogin();
 });

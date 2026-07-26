@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dream Elevates — Home Bakes & Baking Supplies",
+  title: "Dream Elevate — Home Bakes & Baking Supplies",
   description:
     "Handcrafted custom cakes, premium baking ingredients, and professional baking tools. Every celebration deserves a beautiful cake.",
 };

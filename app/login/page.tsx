@@ -69,7 +69,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 pointer-events-none opacity-40">
             <Image
               src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1000&auto=format&fit=crop"
-              alt="Dream Elevates Bakery Background"
+              alt="Dream Elevate Bakery Background"
               fill
               className="object-cover mix-blend-overlay scale-105"
             />
@@ -77,7 +77,7 @@ export default function LoginPage() {
 
           <div className="relative z-10 flex items-center justify-between">
             <Link href="/" className="font-display italic text-3xl font-bold tracking-tight text-[#FBF3EA] hover:text-[#C9A15A] transition-colors">
-              Dream Elevates
+              Dream Elevate
             </Link>
             <motion.span
               animate={{ y: [0, -4, 0] }}
@@ -182,7 +182,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center text-xs text-[#5A3826]">
-            New to Dream Elevates?{" "}
+            New to Dream Elevate?{" "}
             <Link href="/signup" className="font-bold text-[#B5476B] hover:underline">
               Create an Account
             </Link>

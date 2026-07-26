@@ -85,7 +85,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center group">
             <img
               src="/images/logo.png"
-              alt="Dream Elevates Logo"
+              alt="Dream Elevate Logo"
               className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
@@ -97,7 +97,7 @@ export default function Navbar() {
             href="/"
             className="font-display italic text-lg sm:text-2xl font-extrabold tracking-tight text-[#3B2417] hover:text-[#e38c36] transition-colors"
           >
-            Dream Elevates
+            Dream Elevate
           </Link>
         </div>
 

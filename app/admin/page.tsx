@@ -92,7 +92,6 @@ export default function AdminPage() {
     }
   }
 
-
   function handleLogout() {
     sessionStorage.removeItem("dreamelevate_admin_session");
     setIsAuthenticated(false);
@@ -149,10 +148,10 @@ export default function AdminPage() {
         >
           <div className="text-center mb-6">
             <Link href="/" className="font-display italic text-3xl font-bold text-[#FBF3EA]">
-              Dream Elevates
+              Dream Elevate
             </Link>
             <h1 className="text-xl font-bold text-[#C9A15A] mt-3">Admin Portal Login</h1>
-            <p className="text-xs text-[#FBF3EA]/70 mt-1">Manage cakes, prices, and menu items</p>
+            <p className="text-xs text-[#FBF3EA]/70 mt-1">Manage cakes, resin art, fancy items, &amp; prices</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -184,6 +183,8 @@ export default function AdminPage() {
     );
   }
 
+  const standardCategories = ["Signature Cakes", "Custom Cakes", "Baking Tools", "Resin Art Work", "Fancy Items", "Ingredients"];
+
   // --- 2. Admin Dashboard View ---
   return (
     <div className="min-h-screen pt-28 pb-16 px-4 sm:px-8 bg-[#FBF3EA] text-[#3B2417]">
@@ -200,18 +201,18 @@ export default function AdminPage() {
                 setEditItem({
                   id: "",
                   name: "",
-                  price_label: "₹999",
+                  price_label: "₹499",
                   rating: 4.8,
                   review_count: 25,
                   image_url: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800",
-                  category: "Custom Cakes",
+                  category: "Resin Art Work",
                   description: "",
                 });
                 setShowModal(true);
               }}
               className="rounded-full bg-gradient-to-r from-[#e38c36] to-[#C9A15A] text-[#24130A] px-6 py-2.5 text-xs font-extrabold shadow-md hover:scale-105 transition-transform"
             >
-              + Add New Cake Item
+              + Add New Item
             </button>
             <button
               onClick={handleLogout}
@@ -222,7 +223,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Admin UPI & WhatsApp Integration Banner */}
+        {/* Admin UPI Banner */}
         <div className="bg-[#3B2417] text-[#FBF3EA] rounded-2xl p-5 border border-[#C9A15A]/30 mb-8 shadow-lg flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -240,7 +241,7 @@ export default function AdminPage() {
 
         {/* Live Menu Items Grid */}
         {loading ? (
-          <div className="text-center py-20 text-[#5A3826] font-medium">Loading Menu Items...</div>
+          <div className="text-center py-20 text-[#5A3826] font-medium">Loading Products...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {items.map((item) => (
@@ -257,7 +258,7 @@ export default function AdminPage() {
                   </div>
                   <h3 className="font-display italic text-lg font-bold text-[#3B2417]">{item.name}</h3>
                   <p className="text-xs text-[#5A3826] mt-1">
-                    ⭐ {item.rating} ({item.review_count} reviews) &middot; {item.category || "General"}
+                    ⭐ {item.rating} ({item.review_count} reviews) &middot; <span className="font-bold text-[#B5476B]">{item.category || "General"}</span>
                   </p>
                   {item.description && (
                     <p className="text-xs text-[#5A3826]/80 mt-2 line-clamp-2">{item.description}</p>
@@ -298,7 +299,7 @@ export default function AdminPage() {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-display italic text-2xl font-bold">
-                    {editItem?.id ? "Edit Cake Item" : "Add New Cake Item"}
+                    {editItem?.id ? "Edit Product Item" : "Add New Product Item"}
                   </h3>
                   <button onClick={() => setShowModal(false)} className="text-xl font-bold p-1">✕</button>
                 </div>
@@ -321,7 +322,7 @@ export default function AdminPage() {
                       <input
                         type="text"
                         required
-                        placeholder="e.g. ₹899"
+                        placeholder="e.g. ₹450"
                         value={editItem?.price_label || ""}
                         onChange={(e) => setEditItem({ ...editItem, price_label: e.target.value })}
                         className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B]"
@@ -330,22 +331,25 @@ export default function AdminPage() {
                     <div>
                       <label className="block font-bold uppercase mb-1">Category *</label>
                       <select
-                        value={["Custom Cakes", "Baking Tools", "Ingredients"].includes(editItem?.category || "") ? editItem?.category : "custom"}
+                        value={standardCategories.includes(editItem?.category || "") ? editItem?.category : "custom"}
                         onChange={(e) => {
                           if (e.target.value !== "custom") {
                             setEditItem({ ...editItem, category: e.target.value });
                           }
                         }}
-                        className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B] mb-1"
+                        className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B] mb-1 font-semibold"
                       >
+                        <option value="Signature Cakes">Signature Cakes</option>
                         <option value="Custom Cakes">Custom Cakes</option>
                         <option value="Baking Tools">Baking Tools</option>
+                        <option value="Resin Art Work">Resin Art Work (New)</option>
+                        <option value="Fancy Items">Fancy Items (New)</option>
                         <option value="Ingredients">Ingredients</option>
                         <option value="custom">Other / Custom Category...</option>
                       </select>
                       <input
                         type="text"
-                        placeholder="e.g. Custom Cakes or Ingredients"
+                        placeholder="e.g. Resin Art Work or Fancy Items"
                         value={editItem?.category || ""}
                         onChange={(e) => setEditItem({ ...editItem, category: e.target.value })}
                         className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
@@ -353,87 +357,24 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="block font-bold uppercase">Cake Product Image *</label>
-
-                    {/* Option 1: Upload File from PC/Phone */}
-                    <div className="p-3 bg-white rounded-2xl border border-[#3B2417]/20 flex items-center justify-between gap-3 shadow-sm">
-                      <div>
-                        <p className="font-bold text-xs text-[#3B2417]">📁 Upload Image File from Local Computer / Phone</p>
-                        <p className="text-[10px] text-[#5A3826]/70">Supports JPG, PNG, WEBP, GIF files</p>
-                      </div>
-                      <label className="cursor-pointer rounded-full bg-[#3B2417] text-[#FBF3EA] px-4 py-1.5 text-xs font-bold shadow hover:bg-[#B5476B] transition-colors flex-shrink-0">
-                        {uploadingImage ? "Uploading..." : "Choose File..."}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          disabled={uploadingImage}
-                          onChange={handleFileUpload}
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
-
-                    {/* Option 2: Paste Web URL / Google Drive Share Link */}
-                    <div className="space-y-1">
-                      <label className="block font-semibold text-[11px] text-[#5A3826]">
-                        🔗 Or Paste Web Image URL / Google Drive Link:
-                      </label>
+                  <div>
+                    <label className="block font-bold uppercase mb-1">Product Image *</label>
+                    <div className="flex items-center gap-2 mb-1">
                       <input
-                        type="text"
-                        required
-                        placeholder="https://images.unsplash.com/... or https://drive.google.com/file/d/..."
-                        value={editItem?.image_url || ""}
-                        onChange={(e) => setEditItem({ ...editItem, image_url: e.target.value })}
-                        className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="text-xs text-[#5A3826] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#3B2417] file:text-[#FBF3EA] hover:file:bg-[#B5476B]"
                       />
+                      {uploadingImage && <span className="text-xs font-bold text-[#B5476B]">Uploading...</span>}
                     </div>
-
-                    {/* Live Image Preview */}
-                    {editItem?.image_url && (
-                      <div className="flex items-center gap-3 bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-300/50">
-                        <img
-                          src={editItem.image_url}
-                          alt="Cake Preview"
-                          className="w-12 h-12 rounded-lg object-cover border border-emerald-400/40 shadow-sm"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = "none";
-                          }}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[11px] font-bold text-emerald-800">
-                            ✓ Image Attached Successfully
-                          </p>
-                          <p className="text-[10px] text-emerald-700/80 truncate">
-                            {editItem.image_url.startsWith("/uploads") ? "Uploaded Local File" : "Google / Web Image Link"}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block font-bold uppercase mb-1">Rating ⭐</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        min="1"
-                        max="5"
-                        value={editItem?.rating || 4.5}
-                        onChange={(e) => setEditItem({ ...editItem, rating: Number(e.target.value) })}
-                        className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold uppercase mb-1">Review Count</label>
-                      <input
-                        type="number"
-                        value={editItem?.review_count || 10}
-                        onChange={(e) => setEditItem({ ...editItem, review_count: Number(e.target.value) })}
-                        className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B]"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      placeholder="Or enter Image URL"
+                      value={editItem?.image_url || ""}
+                      onChange={(e) => setEditItem({ ...editItem, image_url: e.target.value })}
+                      className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
+                    />
                   </div>
 
                   <div>
@@ -442,23 +383,23 @@ export default function AdminPage() {
                       rows={3}
                       value={editItem?.description || ""}
                       onChange={(e) => setEditItem({ ...editItem, description: e.target.value })}
-                      className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B] resize-none"
+                      className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
                     />
                   </div>
 
-                  <div className="pt-2 flex gap-3">
-                    <button
-                      type="submit"
-                      className="flex-1 rounded-full bg-gradient-to-r from-[#e38c36] to-[#C9A15A] text-[#24130A] py-2.5 text-sm font-extrabold shadow-md hover:scale-105 transition-transform"
-                    >
-                      Save Cake Item
-                    </button>
+                  <div className="pt-2 flex items-center justify-end gap-3">
                     <button
                       type="button"
                       onClick={() => setShowModal(false)}
-                      className="rounded-full border border-[#3B2417]/30 px-5 py-2.5 text-sm font-bold"
+                      className="rounded-full border border-[#3B2417]/20 px-5 py-2 font-bold hover:bg-[#3B2417]/10"
                     >
                       Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-full bg-[#3B2417] text-[#FBF3EA] hover:bg-[#B5476B] px-6 py-2 font-bold shadow-md transition-all"
+                    >
+                      Save Product Item
                     </button>
                   </div>
                 </form>

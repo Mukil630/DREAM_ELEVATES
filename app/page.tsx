@@ -12,14 +12,15 @@ export default function HomePage() {
     <>
       <Hero />
       <ScrollText
-        text="HANDCRAFTED GOURMET CAKES &bull; ARTISANAL BAKERY DELIGHTS &bull; DREAM ELEVATES"
-        subtext="Scroll To Explore Our Signature Creations"
+        text="HANDCRAFTED CAKES &bull; BAKING TOOLS & INGREDIENTS &bull; RESIN ART & FANCY GIFTS &bull; DREAM ELEVATE"
+        subtext="Explore Our Full Collection Beyond Cakes"
         speed={25}
       />
-      <About />
-      <CakeSplitText />
       <MenuGrid />
+      <CakeSplitText />
       <OrderForm />
+      {/* Our Story section moved to go right before location & footer */}
+      <About />
       <FssaiBadge />
       <Location />
     </>

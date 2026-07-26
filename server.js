@@ -66,7 +66,7 @@ const upload = multer({
 });
 
 // --- Admin Authentication ---
-const ADMIN_TOKEN = "dreamelevates-admin-secure-token-2026";
+const ADMIN_TOKEN = "dreamelevate-admin-secure-token-2026";
 const ADMIN_PASS = "admin123";
 
 function requireAdminAuth(req, res, next) {
@@ -789,7 +789,7 @@ app.get('*', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`\n========================================================`);
-  console.log(`🍰 DREAM ELEVATES API & Static Web Server running locally!`);
+  console.log(`🍰 DREAM ELEVATE API & Static Web Server running locally!`);
   console.log(`👉 Access URL: http://localhost:${PORT}`);
   console.log(`👉 Admin Panel: http://localhost:${PORT}/admin/`);
   console.log(`========================================================\n`);

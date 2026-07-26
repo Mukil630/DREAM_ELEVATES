@@ -32,11 +32,11 @@ export default function Footer() {
           <div className="flex items-center gap-3 mb-2">
             <img
               src="/images/logo.png"
-              alt="Dream Elevates Official Logo"
+              alt="Dream Elevate Official Logo"
               className="h-10 sm:h-12 w-auto object-contain"
             />
             <p className="font-display italic text-2xl sm:text-3xl text-[#FBF3EA] font-bold">
-              Dream Elevates
+              Dream Elevate
             </p>
           </div>
           <p className="text-[#FBF3EA]/70 text-sm leading-relaxed max-w-sm">
@@ -113,7 +113,7 @@ export default function Footer() {
 
       <div className="border-t border-[#FBF3EA]/10">
         <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FBF3EA]/50 gap-2">
-          <p>© {new Date().getFullYear()} DREAM ELEVATES. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} DREAM ELEVATE. All rights reserved.</p>
           <p>Instagram: @dreamelevate_hubzz | Contact: 8883338935</p>
         </div>
       </div>

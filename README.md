@@ -1,6 +1,6 @@
-# Dream Elevates — Fullstack Rebuild
+# Dream Elevate — Fullstack Rebuild
 
-A fullstack recreation of the Framer site (Kafe Milano / Dream Elevates template),
+A fullstack recreation of the Framer site (Kafe Milano / Dream Elevate template),
 built with **Next.js 14 (App Router)**, **Tailwind CSS**, **Framer Motion**
 (the same animation engine Framer itself uses), and **Supabase** as the cloud
 database.

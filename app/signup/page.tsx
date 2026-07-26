@@ -71,7 +71,7 @@ export default function SignupPage() {
           <div className="absolute inset-0 pointer-events-none opacity-40">
             <Image
               src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1000&auto=format&fit=crop"
-              alt="Dream Elevates Bakery Background"
+              alt="Dream Elevate Bakery Background"
               fill
               className="object-cover mix-blend-overlay scale-105"
             />
@@ -79,14 +79,14 @@ export default function SignupPage() {
 
           <div className="relative z-10 flex items-center justify-between">
             <Link href="/" className="font-display italic text-3xl font-bold tracking-tight text-[#FBF3EA] hover:text-[#C9A15A] transition-colors">
-              Dream Elevates
+              Dream Elevate
             </Link>
             <motion.span
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="bg-gradient-to-r from-[#e38c36] to-[#C9A15A] text-[#24130A] text-xs font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-lg"
             >
-              ✨ Elevates Club Rewards
+              ✨ Elevate Club Rewards
             </motion.span>
           </div>
 
@@ -126,7 +126,7 @@ export default function SignupPage() {
           <div className="mb-6">
             <h2 className="font-display italic text-3xl font-bold text-[#3B2417]">Create Account</h2>
             <p className="text-xs sm:text-sm text-[#5A3826] mt-1 font-medium">
-              Join Elevates Club for custom cake orders &amp; daily points
+              Join Elevate Club for custom cake orders &amp; daily points
             </p>
           </div>
 

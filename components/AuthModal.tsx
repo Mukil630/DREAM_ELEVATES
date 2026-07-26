@@ -81,7 +81,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, title }: AuthMod
               {mode === "login" ? "Welcome Back" : "Create Account"}
             </h3>
             <p className="text-xs sm:text-sm text-[#5A3826] mt-1">
-              {title || (mode === "login" ? "Log in to place your custom cake orders" : "Join Dream Elevates Club for custom orders & rewards")}
+              {title || (mode === "login" ? "Log in to place your custom cake orders" : "Join Dream Elevate Club for custom orders & rewards")}
             </p>
           </div>
 

@@ -47,8 +47,8 @@ export default function MenuGrid() {
     new Set(items.map((item) => item.category?.trim()).filter((c): c is string => Boolean(c)))
   );
   
-  // Combine base categories with dynamic ones
-  const baseCategories = ["All Products", "Custom Cakes", "Baking Tools", "Ingredients"];
+  // Base categories including Resin Art Work & Fancy Items
+  const baseCategories = ["All Products", "Signature Cakes", "Baking Tools", "Resin Art Work", "Fancy Items"];
   const categories = Array.from(new Set([...baseCategories, ...dynamicCategories]));
 
   const filteredItems = selectedCategory === "All Products"
@@ -57,7 +57,7 @@ export default function MenuGrid() {
         if (!item.category) return false;
         const itemCat = item.category.toLowerCase().trim();
         const selCat = selectedCategory.toLowerCase().trim();
-        return itemCat === selCat || itemCat.replace(/s$/, "") === selCat.replace(/s$/, "");
+        return itemCat.includes(selCat) || selCat.includes(itemCat) || itemCat.replace(/s$/, "") === selCat.replace(/s$/, "");
       });
 
   function handleBuy(item: MenuItem) {
@@ -101,114 +101,141 @@ export default function MenuGrid() {
         } : null}
       />
 
+      {/* Section Header */}
       <motion.div
-        initial={false}
-        animate="show"
-        variants={staggerContainer(0.1)}
-        className="text-center max-w-3xl mx-auto mb-10"
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        variants={staggerContainer(0.15)}
+        className="text-center max-w-3xl mx-auto mb-12"
       >
         <motion.p
           variants={fadeUp}
-          className="text-[#B5476B] text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2"
+          className="text-[#B5476B] text-sm font-bold tracking-wider uppercase mb-2"
         >
-          Cakes &bull; Baking Tools &bull; Premium Ingredients
+          Our Offerings Beyond Cakes
         </motion.p>
         <motion.h2
           variants={fadeUp}
           className="font-display italic text-3xl sm:text-4xl text-[#3B2417] font-bold text-balance"
         >
-          Our Gourmet Bakes &amp; Baking Supplies
+          Signature Bakes, Baking Tools, Resin Art & Fancy Gifts
         </motion.h2>
-        <motion.p variants={fadeUp} className="mt-3 text-[#5A3826] leading-relaxed text-sm sm:text-base">
-          From custom handcrafted cakes to professional baking tools and raw ingredients — everything you need for your baking journey.
+        <motion.p
+          variants={fadeUp}
+          className="mt-3 text-[#5A3826] text-sm sm:text-base leading-relaxed"
+        >
+          We&apos;re not only passionate about baking cakes! Explore our curated collection of professional baking tools, handcrafted resin art pieces, and customized fancy gift items.
         </motion.p>
+
+        {/* Category Pills */}
+        <motion.div
+          variants={fadeUp}
+          className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
+        >
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-full px-5 py-2 text-xs sm:text-sm font-bold transition-all duration-300 shadow-sm ${
+                  isActive
+                    ? "bg-[#3B2417] text-[#FBF3EA] shadow-md scale-105"
+                    : "bg-[#FBF3EA] border border-[#3B2417]/20 text-[#5A3826] hover:bg-[#3B2417]/10"
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </motion.div>
       </motion.div>
 
-      {/* Dynamic Category Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-300 capitalize ${
-              selectedCategory === cat
-                ? "bg-[#3B2417] text-[#FBF3EA] shadow-md scale-105"
-                : "bg-white/70 text-[#3B2417] border border-[#3B2417]/15 hover:bg-[#3B2417]/10"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+      {/* Menu Cards Grid */}
+      {filteredItems.length === 0 ? (
+        <div className="text-center py-12 text-[#5A3826] font-medium text-sm">
+          No items found in this category. Check back soon for new bakes & creations!
+        </div>
+      ) : (
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+          variants={staggerContainer(0.08)}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {filteredItems.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={fadeUp}
+              className="group bg-[#FBF3EA] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border border-[#C9A15A]/20 transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div>
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#3B2417]/5">
+                  <Image
+                    src={item.image_url || "/images/placeholder.jpg"}
+                    alt={item.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  {item.category && (
+                    <span className="absolute top-3 left-3 bg-[#3B2417]/90 text-[#C9A15A] backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
+                      {item.category}
+                    </span>
+                  )}
+                </div>
 
-      <motion.div
-        initial={false}
-        animate="show"
-        variants={staggerContainer(0.08)}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
-      >
-        {filteredItems.map((item) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -6 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="group bg-white/70 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-[#3B2417]/10 flex flex-col justify-between"
-          >
-            <div>
-              <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-[#F4DCE4]/50 mb-4">
-                <Image
-                  src={item.image_url}
-                  alt={item.name}
-                  fill
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                />
-                <span className="absolute top-3 left-3 bg-[#24130A]/80 text-[#C9A15A] text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                  {item.category || "General"}
-                </span>
-                <div className="absolute top-3 right-3 rounded-full bg-[#3B2417] text-[#FBF3EA] px-3 py-1 text-xs font-bold shadow-md">
-                  {item.price_label}
+                {/* Content Details */}
+                <div className="p-6">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="font-display italic text-lg sm:text-xl font-bold text-[#3B2417] line-clamp-1">
+                      {item.name}
+                    </h3>
+                    <span className="font-bold text-base text-[#B5476B] shrink-0">
+                      {item.price_label}
+                    </span>
+                  </div>
+
+                  {item.description && (
+                    <p className="text-xs text-[#5A3826] line-clamp-2 leading-relaxed mb-4">
+                      {item.description}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <h3 className="font-display italic text-lg text-[#3B2417] font-bold">
-                {item.name}
-              </h3>
-              <p className="text-xs text-[#5A3826]/80 mt-1">
-                ⭐ {(Number(item.rating) || 4.5).toFixed(1)} Stars ({item.review_count || 12} reviews)
-              </p>
-              {item.description && (
-                <p className="text-xs text-[#5A3826] mt-2 line-clamp-2">
-                  {item.description}
-                </p>
-              )}
-            </div>
+              {/* Action Buttons */}
+              <div className="px-6 pb-6 pt-0 flex items-center justify-between gap-3 border-t border-[#3B2417]/10 mt-auto">
+                <div className="flex items-center gap-1 text-xs text-[#C9A15A] font-bold">
+                  <span>★</span>
+                  <span>{item.rating || 4.8}</span>
+                  <span className="text-[#5A3826]/60 font-normal">({item.review_count || 25})</span>
+                </div>
 
-            <button
-              onClick={() => handleBuy(item)}
-              className="mt-4 w-full rounded-full bg-gradient-to-r from-[#e38c36] to-[#C9A15A] text-[#24130A] py-2.5 text-xs font-bold shadow transition-all duration-300 hover:scale-105 hover:shadow-amber-500/20"
-            >
-              Order / Buy Now &rarr;
-            </button>
-          </motion.div>
-        ))}
-      </motion.div>
+                <button
+                  onClick={() => handleBuy(item)}
+                  className="rounded-full bg-[#3B2417] text-[#FBF3EA] hover:bg-[#B5476B] px-5 py-2 text-xs font-bold transition-all shadow-md hover:scale-105"
+                >
+                  Buy Now
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={viewportOnce}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-center mt-12"
-      >
+      {/* Footer Link to Full Menu */}
+      <div className="mt-12 text-center">
         <Link
           href="/menu"
-          className="inline-flex rounded-full border-2 border-[#3B2417] px-8 py-3 text-sm font-bold text-[#3B2417] transition-all duration-300 hover:scale-105 hover:bg-[#3B2417] hover:text-[#FBF3EA]"
+          className="inline-flex items-center gap-2 rounded-full border-2 border-[#3B2417] px-8 py-3 text-sm font-bold text-[#3B2417] hover:bg-[#3B2417] hover:text-[#FBF3EA] transition-all duration-300 shadow-sm"
         >
-          View Full Store Catalog
+          <span>View All Products & Tools</span>
+          <span>&rarr;</span>
         </Link>
-      </motion.div>
+      </div>
     </section>
   );
 }

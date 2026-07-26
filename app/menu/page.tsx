@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import MenuGrid from "@/components/MenuGrid";
 
 export const metadata: Metadata = {
-  title: "Menu — Dream Elevates",
+  title: "Menu — Dream Elevate",
 };
 
 export default function MenuPage() {

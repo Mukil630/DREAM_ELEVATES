@@ -224,7 +224,7 @@ export default function Hero() {
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1">
                     <span className="font-extrabold text-[10px] text-[#24130A] truncate max-w-[100px]">
-                      dreamelevates
+                      dream_elevate
                     </span>
                     {/* Blue/Gold Verified Badge */}
                     <svg
@@ -332,7 +332,7 @@ export default function Hero() {
 
             {/* Post Caption */}
             <p className="mt-1 text-[10px] text-gray-700 font-medium px-0.5 line-clamp-2 leading-tight">
-              <strong className="font-extrabold text-[#24130A]">dreamelevates</strong>{" "}
+              <strong className="font-extrabold text-[#24130A]">dream_elevate</strong>{" "}
               {heroSlides[index].caption}
             </p>
 

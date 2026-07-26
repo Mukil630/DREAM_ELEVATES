@@ -3,7 +3,7 @@ import OrderForm from "@/components/OrderForm";
 import Location from "@/components/Location";
 
 export const metadata: Metadata = {
-  title: "Contact — Dream Elevates",
+  title: "Contact — Dream Elevate",
 };
 
 export default function ContactPage() {

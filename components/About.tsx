@@ -80,10 +80,10 @@ export default function About() {
           variants={fadeUp}
           className="font-display italic text-3xl sm:text-4xl text-[#3B2417] font-bold text-balance"
         >
-          Every Celebration Begins with Dream Elevates
+          Every Celebration Begins with Dream Elevate
         </motion.h2>
         <motion.p variants={fadeUp} className="mt-5 text-[#5A3826] leading-relaxed text-sm sm:text-base">
-          At Dream Elevates, every cake is more than just a dessert — it&apos;s a handcrafted masterpiece made with love, creativity, and the finest ingredients. From personalized celebration cakes to premium baking tools and decorations, we&apos;re passionate about helping every customer create unforgettable memories.
+          At Dream Elevate, every cake is more than just a dessert — it&apos;s a handcrafted masterpiece made with love, creativity, and the finest ingredients. From personalized celebration cakes to premium baking tools and decorations, we&apos;re passionate about helping every customer create unforgettable memories.
         </motion.p>
 
         {/* Animated Incrementing Counters Section */}
