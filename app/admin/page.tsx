@@ -46,47 +46,46 @@ export default function AdminPage() {
 
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  // Instant Base64 + Server Upload Handler
+  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingImage(true);
+
+    // 1. Immediately convert to DataURL Base64 for 100% reliable rendering
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      if (evt.target?.result && typeof evt.target.result === "string") {
+        const base64Url = evt.target.result;
+        setEditItem((prev) => ({ ...prev, image_url: base64Url }));
+        setUploadingImage(false);
+      }
+    };
+    reader.onerror = () => {
+      setUploadingImage(false);
+      alert("Failed to read image file.");
+    };
+    reader.readAsDataURL(file);
+
+    // 2. Also attempt background upload to server uploads folder
     try {
-      // 1. First try server upload API
       const formData = new FormData();
       formData.append("image", file);
 
-      const res = await fetch("/api/upload", {
+      fetch("/api/upload", {
         method: "POST",
         body: formData,
-      });
-      const data = await res.json();
-
-      if (data.success && (data.imagePath || data.image_url)) {
-        const uploadedUrl = data.imagePath || data.image_url;
-        setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
-      } else {
-        // 2. Fallback to FileReader DataURL if serverless disk is read-only
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          if (reader.result && typeof reader.result === "string") {
-            setEditItem((prev) => ({ ...prev, image_url: reader.result as string }));
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && (data.imagePath || data.image_url)) {
+            const uploadedUrl = data.imagePath || data.image_url;
+            setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
           }
-        };
-        reader.readAsDataURL(file);
-      }
-    } catch (err) {
-      console.error("Image upload error, using local data reader:", err);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (reader.result && typeof reader.result === "string") {
-          setEditItem((prev) => ({ ...prev, image_url: reader.result as string }));
-        }
-      };
-      reader.readAsDataURL(file);
-    } finally {
-      setUploadingImage(false);
-    }
+        })
+        .catch(() => {});
+    } catch (err) {}
   }
 
   useEffect(() => {
