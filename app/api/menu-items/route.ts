@@ -26,7 +26,7 @@ const defaultMenuItems: MenuItem[] = [
     price_label: "₹799",
     rating: 4.8,
     review_count: 120,
-    category: "Custom Cake",
+    category: "Custom Cakes",
     description: "Infused with organic lavender syrup and vanilla bean buttercream frosting.",
     image_url: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop",
   },
@@ -36,7 +36,7 @@ const defaultMenuItems: MenuItem[] = [
     price_label: "₹1299",
     rating: 4.9,
     review_count: 160,
-    category: "Chocolate Cake",
+    category: "Custom Cakes",
     description: "Rich dark chocolate cake layered with fudge and cocoa nibs.",
     image_url: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&auto=format&fit=crop",
   },
@@ -46,19 +46,9 @@ const defaultMenuItems: MenuItem[] = [
     price_label: "₹699",
     rating: 4.7,
     review_count: 48,
-    category: "Chocolate Cake",
+    category: "Custom Cakes",
     description: "Decadent Dutch chocolate sponge topped with handcrafted Belgian truffle ganache.",
     image_url: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&auto=format&fit=crop",
-  },
-  {
-    id: "prod-4",
-    name: "Midnight Berry Chocolate Cake",
-    price_label: "₹1199",
-    rating: 4.9,
-    review_count: 90,
-    category: "Custom Cake",
-    description: "Super moist 3-layer chocolate fudge cake topped with fresh berries.",
-    image_url: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format&fit=crop",
   },
 ];
 
@@ -107,7 +97,7 @@ export async function GET() {
           const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 799);
           return {
             id: String(item.id),
-            name: cleanStr(item.name) || "Gourmet Cake",
+            name: cleanStr(item.name) || "Gourmet Product",
             price: numPrice,
             price_label: cleanPriceLabel,
             rating: Number(item.rating) || 4.8,
@@ -136,7 +126,7 @@ export async function GET() {
     const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 799);
     return {
       id: item.id || `prod_${idx}`,
-      name: cleanStr(item.name) || "Gourmet Cake",
+      name: cleanStr(item.name) || "Gourmet Product",
       price: numPrice,
       price_label: cleanPriceLabel,
       rating: Number(item.rating) || 4.8,
@@ -164,14 +154,17 @@ export async function POST(req: Request) {
     const cleanCategory = cleanStr(body.category) || "Custom Cakes";
     const cleanDesc = cleanStr(body.description);
 
+    // Validate valid UUID or non-empty ID for Supabase Postgres
+    const rawIdStr = body.id ? String(body.id).trim() : "";
+    const hasValidId = Boolean(rawIdStr && rawIdStr !== "" && rawIdStr !== "null" && rawIdStr !== "undefined");
+
     if (isSupabaseConfigured) {
       try {
-        if (action === "delete" && body.id) {
-          const targetIdStr = String(body.id).trim();
-          await supabase.from("menu_items").delete().eq("id", body.id);
-          await supabase.from("menu_items").delete().eq("id", targetIdStr);
-        } else if (body.id) {
-          await supabase.from("menu_items").update({
+        if (action === "delete" && hasValidId) {
+          const { error: delErr } = await supabase.from("menu_items").delete().eq("id", rawIdStr);
+          if (delErr) console.error("Supabase delete error:", delErr);
+        } else if (hasValidId) {
+          const { error: updErr } = await supabase.from("menu_items").update({
             name: cleanName,
             price_label: cleanPrice,
             rating: Number(body.rating) || 4.8,
@@ -179,35 +172,38 @@ export async function POST(req: Request) {
             image_url: formattedImage,
             category: cleanCategory,
             description: cleanDesc,
-          }).eq("id", body.id);
+          }).eq("id", rawIdStr);
+          if (updErr) console.error("Supabase update error:", updErr);
         } else {
-          await supabase.from("menu_items").insert({
-            name: cleanName || "New Cake Item",
-            price_label: cleanPrice || "₹999",
+          // Add new item into Supabase Postgres DB
+          const { error: insErr } = await supabase.from("menu_items").insert({
+            name: cleanName || "New Product Item",
+            price_label: cleanPrice || "₹499",
             rating: Number(body.rating) || 4.8,
             review_count: Number(body.review_count) || 10,
-            image_url: formattedImage,
+            image_url: formattedImage || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800",
             category: cleanCategory,
             description: cleanDesc,
           });
+          if (insErr) console.error("Supabase insert error:", insErr);
         }
       } catch (err) {
         console.warn("Supabase mutation warning:", err);
       }
     }
 
-    // Always keep local file updated as backup sync
+    // Backup local sync for fallback
     let items = readLocalMenu();
-    if (action === "delete" && body.id) {
-      items = items.filter((item) => String(item.id).trim() !== String(body.id).trim());
-    } else if (body.id) {
-      const idx = items.findIndex((item) => String(item.id).trim() === String(body.id).trim());
-      const numPrice = typeof body.price === "number" ? body.price : (parseFloat(cleanPrice.replace(/[^0-9.]/g, "")) || 999);
+    if (action === "delete" && hasValidId) {
+      items = items.filter((item) => String(item.id).trim() !== rawIdStr);
+    } else if (hasValidId) {
+      const idx = items.findIndex((item) => String(item.id).trim() === rawIdStr);
+      const numPrice = typeof body.price === "number" ? body.price : (parseFloat(cleanPrice.replace(/[^0-9.]/g, "")) || 499);
       const updatedObj: MenuItem & { price?: number; image?: string } = {
-        id: body.id,
-        name: cleanName || "Gourmet Cake",
+        id: rawIdStr,
+        name: cleanName || "Gourmet Product",
         price: numPrice,
-        price_label: cleanPrice || "₹999",
+        price_label: cleanPrice || "₹499",
         rating: Number(body.rating) || 4.8,
         review_count: Number(body.review_count) || 10,
         image: formattedImage,
@@ -221,12 +217,12 @@ export async function POST(req: Request) {
         items.unshift(updatedObj);
       }
     } else {
-      const numPrice = typeof body.price === "number" ? body.price : (parseFloat(cleanPrice.replace(/[^0-9.]/g, "")) || 999);
+      const numPrice = typeof body.price === "number" ? body.price : (parseFloat(cleanPrice.replace(/[^0-9.]/g, "")) || 499);
       const newItem: MenuItem & { price?: number; image?: string } = {
         id: `prod_${Date.now()}`,
-        name: cleanName || "New Cake Item",
+        name: cleanName || "New Product Item",
         price: numPrice,
-        price_label: cleanPrice || "₹999",
+        price_label: cleanPrice || "₹499",
         rating: Number(body.rating) || 4.8,
         review_count: Number(body.review_count) || 10,
         image: formattedImage,
@@ -239,7 +235,7 @@ export async function POST(req: Request) {
 
     writeLocalMenu(items);
 
-    // Re-fetch latest from Supabase if configured to return fresh state
+    // Return fresh state from Supabase Cloud DB
     if (isSupabaseConfigured) {
       const { data } = await supabase
         .from("menu_items")
@@ -248,8 +244,8 @@ export async function POST(req: Request) {
       if (Array.isArray(data) && data.length > 0) {
         const freshItems = data.map((item) => {
           const img = formatImageUrl(item.image_url || item.image || "");
-          const cleanPriceLabel = cleanStr(item.price_label) || "₹799";
-          const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 799);
+          const cleanPriceLabel = cleanStr(item.price_label) || "₹499";
+          const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 499);
           return {
             id: String(item.id),
             name: cleanStr(item.name),
