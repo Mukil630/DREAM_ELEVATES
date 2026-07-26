@@ -138,8 +138,11 @@ export default function AdminPage() {
     }
   }
 
+  // Instant Delete Handler
   async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to remove this item?")) return;
+    // Optimistic UI Delete: immediately remove from screen
+    setItems((prev) => prev.filter((item) => String(item.id).trim() !== String(id).trim()));
+
     try {
       const res = await fetch("/api/menu-items", {
         method: "POST",
@@ -147,12 +150,12 @@ export default function AdminPage() {
         body: JSON.stringify({ action: "delete", id }),
       });
       const data = await res.json();
-      if (data.success) {
-        setItems(data.items || []);
-        await fetchItems();
+      if (data.success && Array.isArray(data.items)) {
+        setItems(data.items);
       }
     } catch (err) {
       console.error("Failed to delete menu item:", err);
+      await fetchItems();
     }
   }
 
