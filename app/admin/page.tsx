@@ -32,7 +32,7 @@ export default function AdminPage() {
   const fetchItems = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/menu-items");
+      const res = await fetch("/api/menu-items", { cache: "no-store" });
       const data = await res.json();
       if (Array.isArray(data)) {
         setItems(data);
@@ -52,6 +52,7 @@ export default function AdminPage() {
 
     setUploadingImage(true);
     try {
+      // 1. First try server upload API
       const formData = new FormData();
       formData.append("image", file);
 
@@ -65,11 +66,24 @@ export default function AdminPage() {
         const uploadedUrl = data.imagePath || data.image_url;
         setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
       } else {
-        alert(data.error || "Failed to upload image file");
+        // 2. Fallback to FileReader DataURL if serverless disk is read-only
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (reader.result && typeof reader.result === "string") {
+            setEditItem((prev) => ({ ...prev, image_url: reader.result as string }));
+          }
+        };
+        reader.readAsDataURL(file);
       }
     } catch (err) {
-      console.error("Image upload error:", err);
-      alert("Error uploading image file.");
+      console.error("Image upload error, using local data reader:", err);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result && typeof reader.result === "string") {
+          setEditItem((prev) => ({ ...prev, image_url: reader.result as string }));
+        }
+      };
+      reader.readAsDataURL(file);
     } finally {
       setUploadingImage(false);
     }
@@ -99,7 +113,10 @@ export default function AdminPage() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!editItem?.name || !editItem?.price_label) return;
+    if (!editItem?.name || !editItem?.price_label) {
+      alert("Please fill in Item Name and Price Label.");
+      return;
+    }
 
     try {
       const res = await fetch("/api/menu-items", {
@@ -113,14 +130,17 @@ export default function AdminPage() {
         setShowModal(false);
         setEditItem(null);
         await fetchItems();
+      } else {
+        alert(data.error || "Failed to save product item");
       }
     } catch (err) {
       console.error("Failed to save menu item:", err);
+      alert("Error saving product item.");
     }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to remove this cake/item?")) return;
+    if (!confirm("Are you sure you want to remove this item?")) return;
     try {
       const res = await fetch("/api/menu-items", {
         method: "POST",
@@ -250,15 +270,15 @@ export default function AdminPage() {
                 className="bg-white/80 backdrop-blur-md rounded-2xl p-4 shadow-md border border-[#3B2417]/10 flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-3">
-                    <Image src={item.image_url} alt={item.name} fill className="object-cover" />
+                  <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-[#3B2417]/5">
+                    <Image src={item.image_url || "/images/placeholder.jpg"} alt={item.name} fill className="object-cover" />
                     <span className="absolute top-2 right-2 bg-[#3B2417] text-[#FBF3EA] text-xs font-bold px-2.5 py-1 rounded-full shadow">
                       {item.price_label}
                     </span>
                   </div>
                   <h3 className="font-display italic text-lg font-bold text-[#3B2417]">{item.name}</h3>
                   <p className="text-xs text-[#5A3826] mt-1">
-                    ⭐ {item.rating} ({item.review_count} reviews) &middot; <span className="font-bold text-[#B5476B]">{item.category || "General"}</span>
+                    ⭐ {item.rating || 4.8} ({item.review_count || 25} reviews) &middot; <span className="font-bold text-[#B5476B]">{item.category || "General"}</span>
                   </p>
                   {item.description && (
                     <p className="text-xs text-[#5A3826]/80 mt-2 line-clamp-2">{item.description}</p>
@@ -290,12 +310,12 @@ export default function AdminPage() {
         {/* Add/Edit Modal */}
         <AnimatePresence>
           {showModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#3B2417]/70 backdrop-blur-sm">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#3B2417]/70 backdrop-blur-sm overflow-y-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="w-full max-w-lg bg-[#FBF3EA] rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#C9A15A]/40 text-[#3B2417]"
+                className="w-full max-w-lg bg-[#FBF3EA] rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#C9A15A]/40 text-[#3B2417] my-8"
               >
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-display italic text-2xl font-bold">
@@ -310,6 +330,7 @@ export default function AdminPage() {
                     <input
                       type="text"
                       required
+                      placeholder="e.g. Handmade Resin Coaster Set"
                       value={editItem?.name || ""}
                       onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
                       className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-sm outline-none focus:border-[#B5476B]"
@@ -359,28 +380,46 @@ export default function AdminPage() {
 
                   <div>
                     <label className="block font-bold uppercase mb-1">Product Image *</label>
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
                       <input
                         type="file"
                         accept="image/*"
                         onChange={handleFileUpload}
                         className="text-xs text-[#5A3826] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#3B2417] file:text-[#FBF3EA] hover:file:bg-[#B5476B]"
                       />
-                      {uploadingImage && <span className="text-xs font-bold text-[#B5476B]">Uploading...</span>}
+                      {uploadingImage && <span className="text-xs font-bold text-[#B5476B]">Processing...</span>}
                     </div>
                     <input
                       type="text"
-                      placeholder="Or enter Image URL"
+                      placeholder="Or enter Image URL (e.g. Unsplash or Google Drive link)"
                       value={editItem?.image_url || ""}
                       onChange={(e) => setEditItem({ ...editItem, image_url: e.target.value })}
                       className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
                     />
+
+                    {/* Instant Live Thumbnail Preview */}
+                    {editItem?.image_url && (
+                      <div className="mt-2 flex items-center gap-3 p-2 bg-white rounded-xl border border-[#3B2417]/10">
+                        <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                          <Image
+                            src={editItem.image_url}
+                            alt="Live Preview"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <span className="text-[11px] text-[#5A3826] font-semibold truncate max-w-[280px]">
+                          ✓ Image Preview Ready
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div>
                     <label className="block font-bold uppercase mb-1">Description</label>
                     <textarea
                       rows={3}
+                      placeholder="Enter product features, ingredients, or specifications..."
                       value={editItem?.description || ""}
                       onChange={(e) => setEditItem({ ...editItem, description: e.target.value })}
                       className="w-full rounded-xl border border-[#3B2417]/20 bg-white px-3 py-2 text-xs outline-none focus:border-[#B5476B]"
