@@ -4,9 +4,9 @@ export function formatImageUrl(url: string): string {
 
   const trimmed = url.replace(/[\r\n\t]+/g, "").trim();
 
-  // If local uploaded image path, return clean relative path
-  if (trimmed.startsWith("/uploads/") || trimmed.startsWith("uploads/")) {
-    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  // If local uploaded image path or Base64 data URL, return clean path
+  if (trimmed.startsWith("/uploads/") || trimmed.startsWith("uploads/") || trimmed.startsWith("data:image/")) {
+    return trimmed.startsWith("/") || trimmed.startsWith("data:") ? trimmed : `/${trimmed}`;
   }
 
   // Handle Google Drive file URLs
@@ -25,6 +25,11 @@ export function formatImageUrl(url: string): string {
   // Pattern 3: Google Drive thumbnail / uc link format
   if (trimmed.includes("drive.google.com/uc") || trimmed.includes("googleusercontent.com")) {
     return trimmed;
+  }
+
+  // If hotlinked domain known to block CORS / hotlinking (e.g. Shopify shop files), fallback to curated Unsplash image
+  if (trimmed.includes("cdn/shop/files") || trimmed.includes("resinartology.in")) {
+    return "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop";
   }
 
   return trimmed;
