@@ -41,6 +41,7 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
 
 export default function MenuGrid() {
   const [items, setItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -51,15 +52,36 @@ export default function MenuGrid() {
 
   useEffect(() => {
     setCurrentUser(getCurrentUser());
+
+    // 1. Instant hydration from localStorage cache
+    try {
+      const cached = localStorage.getItem("dreamelevate_menu_cache");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setItems(parsed);
+          setLoading(false);
+        }
+      }
+    } catch {}
+
+    // 2. Fetch fresh items from database
     fetch("/api/menu-items", { cache: "no-store" })
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setItems(data);
+          try {
+            localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(data));
+          } catch {}
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
 
   // Dynamically extract all unique categories from items array
   const dynamicCategories = Array.from(
@@ -171,8 +193,27 @@ export default function MenuGrid() {
         </motion.div>
       </motion.div>
 
-      {/* Menu Cards Grid */}
-      {filteredItems.length === 0 ? (
+      {/* Menu Cards Grid / Skeleton Loader */}
+      {loading && items.length === 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3, 4, 5, 6].map((idx) => (
+            <div
+              key={idx}
+              className="bg-[#FBF3EA] rounded-3xl overflow-hidden shadow-md border border-[#C9A15A]/20 p-6 flex flex-col justify-between animate-pulse"
+            >
+              <div>
+                <div className="aspect-[4/3] w-full bg-[#3B2417]/10 rounded-2xl mb-4"></div>
+                <div className="h-5 bg-[#3B2417]/10 rounded-full w-3/4 mb-3"></div>
+                <div className="h-4 bg-[#3B2417]/10 rounded-full w-1/2 mb-6"></div>
+              </div>
+              <div className="flex justify-between items-center pt-3 border-t border-[#3B2417]/10">
+                <div className="h-4 bg-[#3B2417]/10 rounded-full w-1/4"></div>
+                <div className="h-8 bg-[#3B2417]/20 rounded-full w-24"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : filteredItems.length === 0 ? (
         <div className="text-center py-12 text-[#5A3826] font-medium text-sm">
           No items found in this category. Check back soon for new bakes & creations!
         </div>
