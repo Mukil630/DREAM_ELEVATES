@@ -21,35 +21,135 @@ export type MenuItem = {
 
 const defaultMenuItems: MenuItem[] = [
   {
-    id: "prod-1",
-    name: "Lavender Bloom Cake",
-    price_label: "₹799",
-    rating: 4.8,
-    review_count: 120,
-    category: "Custom Cakes",
-    description: "Infused with organic lavender syrup and vanilla bean buttercream frosting.",
-    image_url: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop",
+    "id": "resin-1",
+    "name": "Handcrafted Agate Resin Coasters (Set of 4)",
+    "price_label": "₹699",
+    "rating": 4.9,
+    "review_count": 42,
+    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop",
+    "category": "Resin Art Work",
+    "description": "Luxurious epoxy resin coasters with metallic gold leaf trim and heat resistance up to 90°C."
   },
   {
-    id: "prod-2",
-    name: "Dark Velvet Dream",
-    price_label: "₹1299",
-    rating: 4.9,
-    review_count: 160,
-    category: "Custom Cakes",
-    description: "Rich dark chocolate cake layered with fudge and cocoa nibs.",
-    image_url: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&auto=format&fit=crop",
+    "id": "resin-2",
+    "name": "Ocean Wave Resin Wall Clock",
+    "price_label": "₹1499",
+    "rating": 5.0,
+    "review_count": 28,
+    "image_url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop",
+    "category": "Resin Art Work",
+    "description": "12-inch handcrafted wooden wall clock featuring realistic resin ocean waves and silent sweep movement."
   },
   {
-    id: "prod-3",
-    name: "Midnight Truffle Cake",
-    price_label: "₹699",
-    rating: 4.7,
-    review_count: 48,
-    category: "Custom Cakes",
-    description: "Decadent Dutch chocolate sponge topped with handcrafted Belgian truffle ganache.",
-    image_url: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&auto=format&fit=crop",
+    "id": "resin-3",
+    "name": "Gold Foil Resin Serving Tray",
+    "price_label": "₹1299",
+    "rating": 4.8,
+    "review_count": 35,
+    "image_url": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop",
+    "category": "Resin Art Work",
+    "description": "Statement serving tray with gold handles and crystal clear food-safe resin finish."
   },
+  {
+    "id": "fancy-1",
+    "name": "Customized LED Acrylic Name Frame",
+    "price_label": "₹899",
+    "rating": 4.9,
+    "review_count": 56,
+    "image_url": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Personalized 3D optical illusion night light with warm LED lighting and custom name etching."
+  },
+  {
+    "id": "fancy-2",
+    "name": "Deluxe Celebration Gift Hamper",
+    "price_label": "₹1599",
+    "rating": 5.0,
+    "review_count": 64,
+    "image_url": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Curated luxury gift basket with artisan chocolates, custom keepsakes, and ribbon packaging."
+  },
+  {
+    "id": "fancy-3",
+    "name": "Hand-poured Scented Soy Candles",
+    "price_label": "₹599",
+    "rating": 4.8,
+    "review_count": 31,
+    "image_url": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Aromatherapy soy wax candles infused with French vanilla, lavender, and sandalwood essential oils."
+  },
+  {
+    "id": "cake-1",
+    "name": "Lavender Bloom Celebration Cake",
+    "price_label": "₹799",
+    "rating": 4.9,
+    "review_count": 120,
+    "image_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop",
+    "category": "Signature Cakes",
+    "description": "Infused with organic lavender syrup, vanilla bean sponge, and silky Swiss buttercream frosting."
+  },
+  {
+    "id": "cake-2",
+    "name": "Dark Velvet Fudge Cake",
+    "price_label": "₹1299",
+    "rating": 5.0,
+    "review_count": 160,
+    "image_url": "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&auto=format&fit=crop",
+    "category": "Signature Cakes",
+    "description": "Rich 70% dark chocolate sponge layered with dark fudge ganache and cocoa nibs."
+  },
+  {
+    "id": "cake-3",
+    "name": "Midnight Belgian Truffle Cake",
+    "price_label": "₹699",
+    "rating": 4.7,
+    "review_count": 48,
+    "image_url": "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&auto=format&fit=crop",
+    "category": "Custom Cakes",
+    "description": "Decadent Dutch chocolate sponge topped with handcrafted Belgian truffle ganache."
+  },
+  {
+    "id": "tool-1",
+    "name": "Pizza Cutter Wheel",
+    "price_label": "₹210",
+    "rating": 4.8,
+    "review_count": 25,
+    "image_url": "/uploads/upload_1784990975065.png",
+    "category": "Baking Tools",
+    "description": "Heavy-Duty Stainless Steel Pizza Cutter Wheel with Safety Guard & Ergonomic Handle."
+  },
+  {
+    "id": "tool-2",
+    "name": "Silicone Spatula Set",
+    "price_label": "₹80",
+    "rating": 4.8,
+    "review_count": 25,
+    "image_url": "/uploads/upload_1784990838729.png",
+    "category": "Baking Tools",
+    "description": "Heat-Resistant Seamless Silicone Spatula Set for Cooking & Baking (BPA-Free)."
+  },
+  {
+    "id": "tool-3",
+    "name": "Professional Piping Bags",
+    "price_label": "₹70",
+    "rating": 4.8,
+    "review_count": 25,
+    "image_url": "/uploads/upload_1784990712383.png",
+    "category": "Baking Tools",
+    "description": "Professional Piping & Pastry Bags for Cake Decorating (Disposable & Reusable Options)."
+  },
+  {
+    "id": "ing-1",
+    "name": "Pure Madagascar Vanilla Extract",
+    "price_label": "₹450",
+    "rating": 4.9,
+    "review_count": 38,
+    "image_url": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop",
+    "category": "Ingredients",
+    "description": "Organic Madagascar bourbon vanilla extract with real vanilla seeds for gourmet baking."
+  }
 ];
 
 declare global {

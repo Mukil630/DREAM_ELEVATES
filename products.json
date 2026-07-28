@@ -1,19 +1,115 @@
 [
   {
-    "id": "prod_1785067012704",
-    "name": "Resin Art",
-    "price": 499,
-    "price_label": "₹499",
-    "rating": 4.8,
-    "review_count": 25,
-    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800",
-    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800",
+    "id": "resin-1",
+    "name": "Handcrafted Agate Resin Coasters (Set of 4)",
+    "price": 699,
+    "price_label": "₹699",
+    "rating": 4.9,
+    "review_count": 42,
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop",
     "category": "Resin Art Work",
-    "description": ""
+    "description": "Luxurious epoxy resin coasters with metallic gold leaf trim and heat resistance up to 90°C."
   },
   {
-    "id": "6f7681de-aa4e-42fb-a6cd-9e5f0ab5477a",
-    "name": "Pizza Cutter",
+    "id": "resin-2",
+    "name": "Ocean Wave Resin Wall Clock",
+    "price": 1499,
+    "price_label": "₹1499",
+    "rating": 5.0,
+    "review_count": 28,
+    "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop",
+    "category": "Resin Art Work",
+    "description": "12-inch handcrafted wooden wall clock featuring realistic resin ocean waves and silent sweep movement."
+  },
+  {
+    "id": "resin-3",
+    "name": "Gold Foil Resin Serving Tray",
+    "price": 1299,
+    "price_label": "₹1299",
+    "rating": 4.8,
+    "review_count": 35,
+    "image": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop",
+    "category": "Resin Art Work",
+    "description": "Statement serving tray with gold handles and crystal clear food-safe resin finish."
+  },
+  {
+    "id": "fancy-1",
+    "name": "Customized LED Acrylic Name Frame",
+    "price": 899,
+    "price_label": "₹899",
+    "rating": 4.9,
+    "review_count": 56,
+    "image": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Personalized 3D optical illusion night light with warm LED lighting and custom name etching."
+  },
+  {
+    "id": "fancy-2",
+    "name": "Deluxe Celebration Gift Hamper",
+    "price": 1599,
+    "price_label": "₹1599",
+    "rating": 5.0,
+    "review_count": 64,
+    "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Curated luxury gift basket with artisan chocolates, custom keepsakes, and ribbon packaging."
+  },
+  {
+    "id": "fancy-3",
+    "name": "Hand-poured Scented Soy Candles",
+    "price": 599,
+    "price_label": "₹599",
+    "rating": 4.8,
+    "review_count": 31,
+    "image": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=800&auto=format&fit=crop",
+    "category": "Fancy Items",
+    "description": "Aromatherapy soy wax candles infused with French vanilla, lavender, and sandalwood essential oils."
+  },
+  {
+    "id": "cake-1",
+    "name": "Lavender Bloom Celebration Cake",
+    "price": 799,
+    "price_label": "₹799",
+    "rating": 4.9,
+    "review_count": 120,
+    "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop",
+    "category": "Signature Cakes",
+    "description": "Infused with organic lavender syrup, vanilla bean sponge, and silky Swiss buttercream frosting."
+  },
+  {
+    "id": "cake-2",
+    "name": "Dark Velvet Fudge Cake",
+    "price": 1299,
+    "price_label": "₹1299",
+    "rating": 5.0,
+    "review_count": 160,
+    "image": "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&auto=format&fit=crop",
+    "category": "Signature Cakes",
+    "description": "Rich 70% dark chocolate sponge layered with dark fudge ganache and cocoa nibs."
+  },
+  {
+    "id": "cake-3",
+    "name": "Midnight Belgian Truffle Cake",
+    "price": 699,
+    "price_label": "₹699",
+    "rating": 4.7,
+    "review_count": 48,
+    "image": "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&auto=format&fit=crop",
+    "category": "Custom Cakes",
+    "description": "Decadent Dutch chocolate sponge topped with handcrafted Belgian truffle ganache."
+  },
+  {
+    "id": "tool-1",
+    "name": "Pizza Cutter Wheel",
     "price": 210,
     "price_label": "₹210",
     "rating": 4.8,
@@ -21,11 +117,11 @@
     "image": "/uploads/upload_1784990975065.png",
     "image_url": "/uploads/upload_1784990975065.png",
     "category": "Baking Tools",
-    "description": "Heavy-Duty Stainless Steel Pizza Cutter Wheel with Safety Guard & Ergonomic Handle"
+    "description": "Heavy-Duty Stainless Steel Pizza Cutter Wheel with Safety Guard & Ergonomic Handle."
   },
   {
-    "id": "d0a683be-7d1f-4e24-99ec-b5367354b069",
-    "name": "Silicone Spatula",
+    "id": "tool-2",
+    "name": "Silicone Spatula Set",
     "price": 80,
     "price_label": "₹80",
     "rating": 4.8,
@@ -33,11 +129,11 @@
     "image": "/uploads/upload_1784990838729.png",
     "image_url": "/uploads/upload_1784990838729.png",
     "category": "Baking Tools",
-    "description": "Heat-Resistant Seamless Silicone Spatula Set for Cooking & Baking (BPA-Free)"
+    "description": "Heat-Resistant Seamless Silicone Spatula Set for Cooking & Baking (BPA-Free)."
   },
   {
-    "id": "3aafbeef-2cde-4f29-bc7f-8863914bc39e",
-    "name": "Piping Bags",
+    "id": "tool-3",
+    "name": "Professional Piping Bags",
     "price": 70,
     "price_label": "₹70",
     "rating": 4.8,
@@ -45,30 +141,18 @@
     "image": "/uploads/upload_1784990712383.png",
     "image_url": "/uploads/upload_1784990712383.png",
     "category": "Baking Tools",
-    "description": "Professional Piping & Pastry Bags for Cake Decorating (Disposable & Reusable Options)"
+    "description": "Professional Piping & Pastry Bags for Cake Decorating (Disposable & Reusable Options)."
   },
   {
-    "id": "989886f6-0c30-4a4a-8ddf-1a54e45b549e",
-    "name": "Baking Paper",
-    "price": 110,
-    "price_label": "₹110",
-    "rating": 4.8,
-    "review_count": 25,
-    "image": "/uploads/upload_1784990591720.png",
-    "image_url": "/uploads/upload_1784990591720.png",
-    "category": "Baking Tools",
-    "description": "Premium Non-Stick Baking & Parchment Paper (Greaseproof & Oven Safe)"
-  },
-  {
-    "id": "44b63860-4c20-4b06-912b-f6631b68b9aa",
-    "name": "Cake Scrapers",
-    "price": 25,
-    "price_label": "₹25",
-    "rating": 4.8,
-    "review_count": 25,
-    "image": "/uploads/upload_1784990532518.png",
-    "image_url": "/uploads/upload_1784990532518.png",
-    "category": "Baking Tools",
-    "description": "Professional Cake Scraper & Icing Smoother Set (Patterned Combs & Flat Edges)"
+    "id": "ing-1",
+    "name": "Pure Madagascar Vanilla Extract",
+    "price": 450,
+    "price_label": "₹450",
+    "rating": 4.9,
+    "review_count": 38,
+    "image": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop",
+    "image_url": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop",
+    "category": "Ingredients",
+    "description": "Organic Madagascar bourbon vanilla extract with real vanilla seeds for gourmet baking."
   }
 ]

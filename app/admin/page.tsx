@@ -286,7 +286,7 @@ export default function AdminPage() {
                     <img
                       src={item.image_url || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800"}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
                       }}
