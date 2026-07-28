@@ -33,7 +33,7 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
       src={imgSrc}
       alt={alt}
       loading="lazy"
-      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      className="absolute inset-0 z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
       onError={() => {
         if (imgSrc !== fallback) {
           setImgSrc(fallback);
@@ -249,7 +249,7 @@ export default function MenuGrid() {
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#3B2417]/5">
                   <ProductCardImage src={item.image_url} alt={item.name} />
                   {item.category && (
-                    <span className="absolute top-3 left-3 bg-[#3B2417]/90 text-[#C9A15A] backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
+                    <span className="absolute top-3 left-3 z-20 bg-[#3B2417]/90 text-[#C9A15A] backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow">
                       {item.category}
                     </span>
                   )}
