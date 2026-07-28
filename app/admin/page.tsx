@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MenuItem } from "@/app/api/menu-items/route";
+import { compressImageFile } from "@/lib/imageUtils";
 
 const validPasswords = ["DreamElevate@1603"];
 
@@ -46,30 +47,20 @@ export default function AdminPage() {
 
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  // Instant Base64 + Server Upload Handler
-  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  // Instant Compressed Base64 + Server Upload Handler
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingImage(true);
 
-    // 1. Immediately convert to DataURL Base64 for 100% reliable rendering
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      if (evt.target?.result && typeof evt.target.result === "string") {
-        const base64Url = evt.target.result;
-        setEditItem((prev) => ({ ...prev, image_url: base64Url }));
-        setUploadingImage(false);
-      }
-    };
-    reader.onerror = () => {
-      setUploadingImage(false);
-      alert("Failed to read image file.");
-    };
-    reader.readAsDataURL(file);
-
-    // 2. Also attempt background upload to server uploads folder
     try {
+      // 1. Compress image client-side to compact JPEG Base64 (~60KB - 120KB) for 100% Vercel & Supabase compatibility
+      const compressedDataUrl = await compressImageFile(file, 800, 800, 0.82);
+      setEditItem((prev) => ({ ...prev, image_url: compressedDataUrl }));
+      setUploadingImage(false);
+
+      // 2. Background attempt to upload if server provides a full http/https remote URL
       const formData = new FormData();
       formData.append("image", file);
 
@@ -81,12 +72,18 @@ export default function AdminPage() {
         .then((data) => {
           if (data.success && (data.imagePath || data.image_url)) {
             const uploadedUrl = data.imagePath || data.image_url;
-            setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
+            if (uploadedUrl.startsWith("http://") || uploadedUrl.startsWith("https://")) {
+              setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
+            }
           }
         })
         .catch(() => {});
-    } catch (err) {}
+    } catch (err) {
+      setUploadingImage(false);
+      alert("Failed to process image file.");
+    }
   }
+
 
   useEffect(() => {
     if (isAuthenticated) {

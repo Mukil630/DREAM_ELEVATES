@@ -20,6 +20,25 @@ type MenuItem = {
   description?: string;
 };
 
+function ProductCardImage({ src, alt }: { src: string; alt: string }) {
+  const fallback = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop";
+  const [imgSrc, setImgSrc] = useState(src || fallback);
+
+  useEffect(() => {
+    setImgSrc(src || fallback);
+  }, [src]);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      fill
+      className="object-cover group-hover:scale-105 transition-transform duration-700"
+      onError={() => setImgSrc(fallback)}
+    />
+  );
+}
+
 export default function MenuGrid() {
   const [items, setItems] = useState<MenuItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
@@ -174,12 +193,7 @@ export default function MenuGrid() {
               <div>
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#3B2417]/5">
-                  <Image
-                    src={item.image_url || "/images/placeholder.jpg"}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  <ProductCardImage src={item.image_url} alt={item.name} />
                   {item.category && (
                     <span className="absolute top-3 left-3 bg-[#3B2417]/90 text-[#C9A15A] backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
                       {item.category}

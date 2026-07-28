@@ -36,4 +36,5 @@ export const scaleIn = {
 };
 
 // Default viewport settings for whileInView triggers
-export const viewportOnce = { once: true, amount: 0.25 };
+export const viewportOnce = { once: true, amount: 0.01, margin: "100px 0px" };
+
