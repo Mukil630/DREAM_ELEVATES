@@ -29,12 +29,16 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
   }, [src]);
 
   return (
-    <Image
+    <img
       src={imgSrc}
       alt={alt}
-      fill
-      className="object-cover group-hover:scale-105 transition-transform duration-700"
-      onError={() => setImgSrc(fallback)}
+      loading="lazy"
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      onError={() => {
+        if (imgSrc !== fallback) {
+          setImgSrc(fallback);
+        }
+      }}
     />
   );
 }
@@ -53,34 +57,43 @@ export default function MenuGrid() {
   useEffect(() => {
     setCurrentUser(getCurrentUser());
 
-    // 1. Instant hydration from localStorage cache
-    try {
-      const cached = localStorage.getItem("dreamelevate_menu_cache");
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setItems(parsed);
-          setLoading(false);
+    const loadMenu = () => {
+      try {
+        const cached = localStorage.getItem("dreamelevate_menu_cache");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setItems(parsed);
+            setLoading(false);
+          }
         }
-      }
-    } catch {}
+      } catch {}
 
-    // 2. Fetch fresh items from database
-    fetch("/api/menu-items", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setItems(data);
-          try {
-            localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(data));
-          } catch {}
-        }
-      })
-      .catch(() => {})
-      .finally(() => {
-        setLoading(false);
-      });
+      fetch("/api/menu-items", { cache: "no-store" })
+        .then((r) => r.json())
+        .then((data) => {
+          if (Array.isArray(data) && data.length > 0) {
+            setItems(data);
+            try {
+              localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(data));
+            } catch {}
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    loadMenu();
+
+    const handleMenuUpdate = () => loadMenu();
+    window.addEventListener("dreamelevate_menu_updated", handleMenuUpdate);
+    return () => {
+      window.removeEventListener("dreamelevate_menu_updated", handleMenuUpdate);
+    };
   }, []);
+
 
 
   // Dynamically extract all unique categories from items array

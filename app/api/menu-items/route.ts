@@ -52,25 +52,39 @@ const defaultMenuItems: MenuItem[] = [
   },
 ];
 
+declare global {
+  var _menuItemsMemoryCache: MenuItem[] | undefined;
+}
+
 function readLocalMenu(): MenuItem[] {
+  if (globalThis._menuItemsMemoryCache && globalThis._menuItemsMemoryCache.length > 0) {
+    return globalThis._menuItemsMemoryCache;
+  }
   try {
     if (!fs.existsSync(MENU_FILE)) {
-      fs.writeFileSync(MENU_FILE, JSON.stringify(defaultMenuItems, null, 2), "utf8");
+      try {
+        fs.writeFileSync(MENU_FILE, JSON.stringify(defaultMenuItems, null, 2), "utf8");
+      } catch {}
+      globalThis._menuItemsMemoryCache = defaultMenuItems;
       return defaultMenuItems;
     }
     const data = fs.readFileSync(MENU_FILE, "utf8");
     const parsed = JSON.parse(data);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultMenuItems;
+    const result = Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultMenuItems;
+    globalThis._menuItemsMemoryCache = result;
+    return result;
   } catch {
+    globalThis._menuItemsMemoryCache = defaultMenuItems;
     return defaultMenuItems;
   }
 }
 
 function writeLocalMenu(items: MenuItem[]) {
+  globalThis._menuItemsMemoryCache = items;
   try {
     fs.writeFileSync(MENU_FILE, JSON.stringify(items, null, 2), "utf8");
   } catch (err) {
-    console.error("Error writing local menu items:", err);
+    console.warn("Vercel serverless read-only filesystem detected, keeping menu items in memory cache:", err);
   }
 }
 
@@ -118,7 +132,7 @@ export async function GET() {
     }
   }
 
-  // Fallback to local DB
+  // Fallback to local / in-memory DB
   const rawItems = readLocalMenu();
   items = rawItems.map((item, idx) => {
     const img = formatImageUrl(item.image_url || item.image || "");
@@ -154,7 +168,6 @@ export async function POST(req: Request) {
     const cleanCategory = cleanStr(body.category) || "Custom Cakes";
     const cleanDesc = cleanStr(body.description);
 
-    // Validate valid UUID or non-empty ID for Supabase Postgres
     const rawIdStr = body.id ? String(body.id).trim() : "";
     const hasValidId = Boolean(rawIdStr && rawIdStr !== "" && rawIdStr !== "null" && rawIdStr !== "undefined");
 
@@ -192,7 +205,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Backup local sync for fallback
+    // Local / In-memory sync for fallback
     let items = readLocalMenu();
     if (action === "delete" && hasValidId) {
       items = items.filter((item) => String(item.id).trim() !== rawIdStr);
@@ -218,8 +231,9 @@ export async function POST(req: Request) {
       }
     } else {
       const numPrice = typeof body.price === "number" ? body.price : (parseFloat(cleanPrice.replace(/[^0-9.]/g, "")) || 499);
+      const generatedId = `prod_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
       const newItem: MenuItem & { price?: number; image?: string } = {
-        id: `prod_${Date.now()}`,
+        id: generatedId,
         name: cleanName || "New Product Item",
         price: numPrice,
         price_label: cleanPrice || "₹499",
@@ -230,41 +244,43 @@ export async function POST(req: Request) {
         category: cleanCategory,
         description: cleanDesc,
       };
-      items.unshift(newItem);
+      items = [newItem, ...items];
     }
 
     writeLocalMenu(items);
 
-    // Return fresh state from Supabase Cloud DB
+    // Return fresh state from Supabase Cloud DB if available
     if (isSupabaseConfigured) {
-      const { data } = await supabase
-        .from("menu_items")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (Array.isArray(data) && data.length > 0) {
-        const freshItems = data.map((item) => {
-          const img = formatImageUrl(item.image_url || item.image || "");
-          const cleanPriceLabel = cleanStr(item.price_label) || "₹499";
-          const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 499);
-          return {
-            id: String(item.id),
-            name: cleanStr(item.name),
-            price: numPrice,
-            price_label: cleanPriceLabel,
-            rating: Number(item.rating) || 4.8,
-            review_count: Number(item.review_count) || 10,
-            image: img,
-            image_url: img,
-            category: cleanStr(item.category) || "Custom Cakes",
-            description: cleanStr(item.description) || "",
-          };
-        });
-        writeLocalMenu(freshItems);
-        return NextResponse.json(
-          { success: true, items: freshItems },
-          { headers: { "Cache-Control": "no-store, max-age=0, must-revalidate" } }
-        );
-      }
+      try {
+        const { data } = await supabase
+          .from("menu_items")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (Array.isArray(data) && data.length > 0) {
+          const freshItems = data.map((item) => {
+            const img = formatImageUrl(item.image_url || item.image || "");
+            const cleanPriceLabel = cleanStr(item.price_label) || "₹499";
+            const numPrice = typeof item.price === "number" ? item.price : (parseFloat(cleanPriceLabel.replace(/[^0-9.]/g, "")) || 499);
+            return {
+              id: String(item.id),
+              name: cleanStr(item.name),
+              price: numPrice,
+              price_label: cleanPriceLabel,
+              rating: Number(item.rating) || 4.8,
+              review_count: Number(item.review_count) || 10,
+              image: img,
+              image_url: img,
+              category: cleanStr(item.category) || "Custom Cakes",
+              description: cleanStr(item.description) || "",
+            };
+          });
+          writeLocalMenu(freshItems);
+          return NextResponse.json(
+            { success: true, items: freshItems },
+            { headers: { "Cache-Control": "no-store, max-age=0, must-revalidate" } }
+          );
+        }
+      } catch {}
     }
 
     return NextResponse.json(
@@ -276,3 +292,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: errorMsg }, { status: 400 });
   }
 }
+

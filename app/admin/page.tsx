@@ -121,11 +121,14 @@ export default function AdminPage() {
         body: JSON.stringify(editItem),
       });
       const data = await res.json();
-      if (data.success) {
-        setItems(data.items || []);
+      if (data.success && Array.isArray(data.items)) {
+        setItems(data.items);
+        try {
+          localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(data.items));
+          window.dispatchEvent(new Event("dreamelevate_menu_updated"));
+        } catch {}
         setShowModal(false);
         setEditItem(null);
-        await fetchItems();
       } else {
         alert(data.error || "Failed to save product item");
       }
@@ -138,7 +141,12 @@ export default function AdminPage() {
   // Instant Delete Handler
   async function handleDelete(id: string) {
     // Optimistic UI Delete: immediately remove from screen
-    setItems((prev) => prev.filter((item) => String(item.id).trim() !== String(id).trim()));
+    const updatedLocal = items.filter((item) => String(item.id).trim() !== String(id).trim());
+    setItems(updatedLocal);
+    try {
+      localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(updatedLocal));
+      window.dispatchEvent(new Event("dreamelevate_menu_updated"));
+    } catch {}
 
     try {
       const res = await fetch("/api/menu-items", {
@@ -149,12 +157,17 @@ export default function AdminPage() {
       const data = await res.json();
       if (data.success && Array.isArray(data.items)) {
         setItems(data.items);
+        try {
+          localStorage.setItem("dreamelevate_menu_cache", JSON.stringify(data.items));
+          window.dispatchEvent(new Event("dreamelevate_menu_updated"));
+        } catch {}
       }
     } catch (err) {
       console.error("Failed to delete menu item:", err);
       await fetchItems();
     }
   }
+
 
   // --- 1. Admin Login View ---
   if (!isAuthenticated) {
@@ -270,7 +283,14 @@ export default function AdminPage() {
               >
                 <div>
                   <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-[#3B2417]/5">
-                    <Image src={item.image_url || "/images/placeholder.jpg"} alt={item.name} fill className="object-cover" />
+                    <img
+                      src={item.image_url || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800"}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
+                      }}
+                    />
                     <span className="absolute top-2 right-2 bg-[#3B2417] text-[#FBF3EA] text-xs font-bold px-2.5 py-1 rounded-full shadow">
                       {item.price_label}
                     </span>
@@ -309,7 +329,7 @@ export default function AdminPage() {
         {/* Add/Edit Modal */}
         <AnimatePresence>
           {showModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#3B2417]/70 backdrop-blur-sm overflow-y-auto">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#3B2417]/70 backdrop-blur-sm overflow-y-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -400,11 +420,10 @@ export default function AdminPage() {
                     {editItem?.image_url && (
                       <div className="mt-2 flex items-center gap-3 p-2 bg-white rounded-xl border border-[#3B2417]/10">
                         <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
-                          <Image
+                          <img
                             src={editItem.image_url}
                             alt="Live Preview"
-                            fill
-                            className="object-cover"
+                            className="w-full h-full object-cover"
                           />
                         </div>
                         <span className="text-[11px] text-[#5A3826] font-semibold truncate max-w-[280px]">
@@ -413,6 +432,7 @@ export default function AdminPage() {
                       </div>
                     )}
                   </div>
+
 
                   <div>
                     <label className="block font-bold uppercase mb-1">Description</label>

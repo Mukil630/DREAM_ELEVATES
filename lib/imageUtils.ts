@@ -13,23 +13,18 @@ export function formatImageUrl(url: string): string {
   // Pattern 1: https://drive.google.com/file/d/FILE_ID/view...
   const driveFileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (driveFileMatch && driveFileMatch[1]) {
-    return `https://drive.google.com/uc?export=view&id=${driveFileMatch[1]}`;
+    return `https://lh3.googleusercontent.com/d/${driveFileMatch[1]}`;
   }
 
-  // Pattern 2: https://drive.google.com/open?id=FILE_ID or ?id=FILE_ID
+  // Pattern 2: https://drive.google.com/open?id=FILE_ID or ?id=FILE_ID or uc?export=view&id=FILE_ID
   const driveIdMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (trimmed.includes("drive.google.com") && driveIdMatch && driveIdMatch[1]) {
-    return `https://drive.google.com/uc?export=view&id=${driveIdMatch[1]}`;
+    return `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
   }
 
-  // Pattern 3: Google Drive thumbnail / uc link format
-  if (trimmed.includes("drive.google.com/uc") || trimmed.includes("googleusercontent.com")) {
+  // Pattern 3: googleusercontent direct links
+  if (trimmed.includes("googleusercontent.com")) {
     return trimmed;
-  }
-
-  // If hotlinked domain known to block CORS / hotlinking (e.g. Shopify shop files), fallback to curated Unsplash image
-  if (trimmed.includes("cdn/shop/files") || trimmed.includes("resinartology.in")) {
-    return "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop";
   }
 
   return trimmed;
@@ -83,4 +78,5 @@ export function compressImageFile(
     reader.readAsDataURL(file);
   });
 }
+
 
