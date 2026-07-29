@@ -1,28 +1,31 @@
-// Utility to format any image URL, converting Google Drive & web share links to direct viewable URLs
 export function formatImageUrl(url: string): string {
-  if (!url) return "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
+  const fallback = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
+  if (!url) return fallback;
 
-  const trimmed = url.replace(/[\r\n\t]+/g, "").trim();
+  let trimmed = url.trim();
 
-  // If local uploaded image path or Base64 data URL, return clean path
-  if (trimmed.startsWith("/uploads/") || trimmed.startsWith("uploads/") || trimmed.startsWith("data:image/")) {
-    return trimmed.startsWith("/") || trimmed.startsWith("data:") ? trimmed : `/${trimmed}`;
+  // Handle Base64 Data URLs - strip any internal whitespace or linebreaks
+  if (trimmed.includes("data:image/")) {
+    const dataIdx = trimmed.indexOf("data:image/");
+    return trimmed.substring(dataIdx).replace(/\s+/g, "");
+  }
+
+  // If local uploaded image path
+  if (trimmed.startsWith("/uploads/") || trimmed.startsWith("uploads/")) {
+    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
   }
 
   // Handle Google Drive file URLs
-  // Pattern 1: https://drive.google.com/file/d/FILE_ID/view...
   const driveFileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (driveFileMatch && driveFileMatch[1]) {
     return `https://lh3.googleusercontent.com/d/${driveFileMatch[1]}`;
   }
 
-  // Pattern 2: https://drive.google.com/open?id=FILE_ID or ?id=FILE_ID or uc?export=view&id=FILE_ID
   const driveIdMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (trimmed.includes("drive.google.com") && driveIdMatch && driveIdMatch[1]) {
     return `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
   }
 
-  // Pattern 3: googleusercontent direct links
   if (trimmed.includes("googleusercontent.com")) {
     return trimmed;
   }
