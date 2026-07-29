@@ -54,8 +54,10 @@ export default function MenuGrid() {
         const cached = localStorage.getItem("dreamelevate_menu_cache");
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed) && parsed.length >= 50) {
             return parsed;
+          } else {
+            localStorage.removeItem("dreamelevate_menu_cache");
           }
         }
       } catch {}
