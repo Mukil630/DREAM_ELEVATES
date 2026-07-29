@@ -30,12 +30,12 @@ export function formatImageUrl(url: string): string {
   return trimmed;
 }
 
-// Client-side lightweight image compression (to ~60KB - 120KB Base64 JPEG)
+// Client-side lightweight image compression (to ~15KB - 35KB Base64 JPEG)
 export function compressImageFile(
   file: File,
-  maxWidth = 800,
-  maxHeight = 800,
-  quality = 0.8
+  maxWidth = 500,
+  maxHeight = 500,
+  quality = 0.65
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -78,5 +78,6 @@ export function compressImageFile(
     reader.readAsDataURL(file);
   });
 }
+
 
 

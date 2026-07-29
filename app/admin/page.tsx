@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MenuItem } from "@/app/api/menu-items/route";
-import { compressImageFile } from "@/lib/imageUtils";
+import { compressImageFile, formatImageUrl } from "@/lib/imageUtils";
 
 const validPasswords = ["DreamElevate@1603"];
 
@@ -55,12 +55,12 @@ export default function AdminPage() {
     setUploadingImage(true);
 
     try {
-      // 1. Compress image client-side to compact JPEG Base64 (~60KB - 120KB) for 100% Vercel & Supabase compatibility
-      const compressedDataUrl = await compressImageFile(file, 800, 800, 0.82);
+      // 1. Compress image client-side to compact JPEG Base64 (~15KB - 35KB) for 100% Vercel & Supabase compatibility
+      const compressedDataUrl = await compressImageFile(file, 500, 500, 0.65);
       setEditItem((prev) => ({ ...prev, image_url: compressedDataUrl }));
       setUploadingImage(false);
 
-      // 2. Background attempt to upload if server provides a full http/https remote URL
+      // 2. Background attempt to upload if server provides a valid path or remote URL
       const formData = new FormData();
       formData.append("image", file);
 
@@ -72,7 +72,11 @@ export default function AdminPage() {
         .then((data) => {
           if (data.success && (data.imagePath || data.image_url)) {
             const uploadedUrl = data.imagePath || data.image_url;
-            if (uploadedUrl.startsWith("http://") || uploadedUrl.startsWith("https://")) {
+            if (
+              uploadedUrl.startsWith("http://") ||
+              uploadedUrl.startsWith("https://") ||
+              uploadedUrl.startsWith("data:image/")
+            ) {
               setEditItem((prev) => ({ ...prev, image_url: uploadedUrl }));
             }
           }
@@ -115,10 +119,15 @@ export default function AdminPage() {
     }
 
     try {
+      const formattedObj = {
+        ...editItem,
+        image_url: formatImageUrl(editItem.image_url || editItem.image || ""),
+      };
+
       const res = await fetch("/api/menu-items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editItem),
+        body: JSON.stringify(formattedObj),
       });
       const data = await res.json();
       if (data.success && Array.isArray(data.items)) {
@@ -284,7 +293,7 @@ export default function AdminPage() {
                 <div>
                   <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-3 bg-[#3B2417]/5">
                     <img
-                      src={item.image_url || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800"}
+                      src={formatImageUrl(item.image_url || item.image || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800")}
                       alt={item.name}
                       className="absolute inset-0 w-full h-full object-cover"
                       onError={(e) => {
@@ -382,8 +391,8 @@ export default function AdminPage() {
                         <option value="Signature Cakes">Signature Cakes</option>
                         <option value="Custom Cakes">Custom Cakes</option>
                         <option value="Baking Tools">Baking Tools</option>
-                        <option value="Resin Art Work">Resin Art Work (New)</option>
-                        <option value="Fancy Items">Fancy Items (New)</option>
+                        <option value="Resin Art Work">Resin Art Work</option>
+                        <option value="Fancy Items">Fancy Items</option>
                         <option value="Ingredients">Ingredients</option>
                         <option value="custom">Other / Custom Category...</option>
                       </select>
@@ -421,9 +430,12 @@ export default function AdminPage() {
                       <div className="mt-2 flex items-center gap-3 p-2 bg-white rounded-xl border border-[#3B2417]/10">
                         <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
                           <img
-                            src={editItem.image_url}
+                            src={formatImageUrl(editItem.image_url || "")}
                             alt="Live Preview"
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
+                            }}
                           />
                         </div>
                         <span className="text-[11px] text-[#5A3826] font-semibold truncate max-w-[280px]">

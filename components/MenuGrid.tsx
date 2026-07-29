@@ -9,6 +9,8 @@ import { getCurrentUser, User } from "@/lib/auth";
 import AuthModal from "@/components/AuthModal";
 import UpiPaymentModal from "@/components/UpiPaymentModal";
 
+import { formatImageUrl } from "@/lib/imageUtils";
+
 type MenuItem = {
   id: string;
   name: string;
@@ -22,18 +24,21 @@ type MenuItem = {
 
 function ProductCardImage({ src, alt }: { src: string; alt: string }) {
   const fallback = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop";
-  const [imgSrc, setImgSrc] = useState(src || fallback);
+  const formattedSrc = formatImageUrl(src || "");
+  const [imgSrc, setImgSrc] = useState(formattedSrc || fallback);
 
   useEffect(() => {
-    setImgSrc(src || fallback);
+    const formatted = formatImageUrl(src || "");
+    setImgSrc(formatted || fallback);
   }, [src]);
 
   return (
     <img
       src={imgSrc}
       alt={alt}
-      loading="lazy"
-      className="absolute inset-0 z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      loading="eager"
+      decoding="async"
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0"
       onError={() => {
         if (imgSrc !== fallback) {
           setImgSrc(fallback);
@@ -44,8 +49,21 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
 }
 
 export default function MenuGrid() {
-  const [items, setItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<MenuItem[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("dreamelevate_menu_cache");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch {}
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState<boolean>(items.length === 0);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -58,17 +76,6 @@ export default function MenuGrid() {
     setCurrentUser(getCurrentUser());
 
     const loadMenu = () => {
-      try {
-        const cached = localStorage.getItem("dreamelevate_menu_cache");
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setItems(parsed);
-            setLoading(false);
-          }
-        }
-      } catch {}
-
       fetch("/api/menu-items", { cache: "no-store" })
         .then((r) => r.json())
         .then((data) => {
@@ -87,14 +94,24 @@ export default function MenuGrid() {
 
     loadMenu();
 
-    const handleMenuUpdate = () => loadMenu();
+    const handleMenuUpdate = () => {
+      try {
+        const cached = localStorage.getItem("dreamelevate_menu_cache");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setItems(parsed);
+          }
+        }
+      } catch {}
+      loadMenu();
+    };
+
     window.addEventListener("dreamelevate_menu_updated", handleMenuUpdate);
     return () => {
       window.removeEventListener("dreamelevate_menu_updated", handleMenuUpdate);
     };
   }, []);
-
-
 
   // Dynamically extract all unique categories from items array
   const dynamicCategories = Array.from(
@@ -105,10 +122,25 @@ export default function MenuGrid() {
   const baseCategories = ["All Products", "Signature Cakes", "Baking Tools", "Resin Art Work", "Fancy Items"];
   const categories = Array.from(new Set([...baseCategories, ...dynamicCategories]));
 
+  const normalizeCat = (cat: string) => {
+    if (!cat) return "";
+    let c = cat.toLowerCase().trim();
+    if (c.includes("resin")) return "resin art work";
+    if (c.includes("tool") || c.includes("baking tool")) return "baking tools";
+    if (c.includes("fancy")) return "fancy items";
+    if (c.includes("ingredient")) return "ingredients";
+    if (c.includes("signature")) return "signature cakes";
+    if (c.includes("custom")) return "custom cakes";
+    return c;
+  };
+
   const filteredItems = selectedCategory === "All Products"
     ? items
     : items.filter((item) => {
         if (!item.category) return false;
+        const normItemCat = normalizeCat(item.category);
+        const normSelCat = normalizeCat(selectedCategory);
+        if (normItemCat && normItemCat === normSelCat) return true;
         const itemCat = item.category.toLowerCase().trim();
         const selCat = selectedCategory.toLowerCase().trim();
         return itemCat.includes(selCat) || selCat.includes(itemCat) || itemCat.replace(/s$/, "") === selCat.replace(/s$/, "");
