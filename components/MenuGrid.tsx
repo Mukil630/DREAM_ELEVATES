@@ -24,17 +24,16 @@ type MenuItem = {
 
 function ProductCardImage({ src, alt }: { src: string; alt: string }) {
   const fallback = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop";
-  const formattedSrc = formatImageUrl(src || "");
-  const [imgSrc, setImgSrc] = useState(formattedSrc || fallback);
+  const displaySrc = formatImageUrl(src || "") || fallback;
+  const [imgSrc, setImgSrc] = useState(displaySrc);
 
   useEffect(() => {
-    const formatted = formatImageUrl(src || "");
-    setImgSrc(formatted || fallback);
+    setImgSrc(formatImageUrl(src || "") || fallback);
   }, [src]);
 
   return (
     <img
-      src={imgSrc}
+      src={imgSrc || displaySrc}
       alt={alt}
       loading="eager"
       decoding="async"
@@ -269,22 +268,15 @@ export default function MenuGrid() {
           </button>
         </div>
       ) : (
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          variants={staggerContainer(0.08)}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item) => (
-            <motion.div
+            <div
               key={item.id}
-              variants={fadeUp}
-              className="group bg-[#FBF3EA] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border border-[#C9A15A]/20 transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between"
+              className="group bg-[#FBF3EA] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border border-[#C9A15A]/20 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
             >
               <div>
-                {/* Image Container */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#3B2417]/5">
+                {/* Image Header Container */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#3B2417]/10 shrink-0">
                   <ProductCardImage src={item.image_url} alt={item.name} />
                   {item.category && (
                     <span className="absolute top-3 left-3 z-20 bg-[#3B2417]/90 text-[#C9A15A] backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow">
@@ -327,9 +319,9 @@ export default function MenuGrid() {
                   Buy Now
                 </button>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       {/* Footer Link to Full Menu */}
