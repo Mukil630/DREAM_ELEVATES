@@ -47,17 +47,18 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-export default function MenuGrid() {
+export default function MenuGrid({ initialItems = [] }: { initialItems?: MenuItem[] }) {
   const [items, setItems] = useState<MenuItem[]>(() => {
+    if (Array.isArray(initialItems) && initialItems.length > 0) {
+      return initialItems;
+    }
     if (typeof window !== "undefined") {
       try {
         const cached = localStorage.getItem("dreamelevate_menu_cache");
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length >= 50) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             return parsed;
-          } else {
-            localStorage.removeItem("dreamelevate_menu_cache");
           }
         }
       } catch {}
