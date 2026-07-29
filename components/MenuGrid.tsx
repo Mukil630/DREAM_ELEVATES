@@ -38,7 +38,7 @@ function ProductCardImage({ src, alt }: { src: string; alt: string }) {
       alt={alt}
       loading="eager"
       decoding="async"
-      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0"
+      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0"
       onError={() => {
         if (imgSrc !== fallback) {
           setImgSrc(fallback);
