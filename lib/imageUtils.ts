@@ -1,16 +1,17 @@
 export function formatImageUrl(url: string): string {
   const fallback = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800";
-  if (!url) return fallback;
+  if (!url || typeof url !== "string") return fallback;
 
-  let trimmed = url.trim();
+  // Remove surrounding quotes, escaped quotes, newlines, and carriage returns
+  let trimmed = url.replace(/^[\\"'\s]+|[\\"'\s]+$/g, "").trim();
 
-  // Handle Base64 Data URLs - strip any internal whitespace or linebreaks
+  // Handle Base64 Data URLs
   if (trimmed.includes("data:image/")) {
     const dataIdx = trimmed.indexOf("data:image/");
-    return trimmed.substring(dataIdx).replace(/\s+/g, "");
+    return trimmed.substring(dataIdx).replace(/[\r\n\s\t\\]+/g, "");
   }
 
-  // If local uploaded image path
+  // Handle local uploaded image path
   if (trimmed.startsWith("/uploads/") || trimmed.startsWith("uploads/")) {
     return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
   }
