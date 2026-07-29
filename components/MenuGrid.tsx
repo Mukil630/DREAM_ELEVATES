@@ -259,8 +259,14 @@ export default function MenuGrid() {
           ))}
         </div>
       ) : filteredItems.length === 0 ? (
-        <div className="text-center py-12 text-[#5A3826] font-medium text-sm">
-          No items found in this category. Check back soon for new bakes & creations!
+        <div className="text-center py-12 text-[#5A3826] font-medium text-sm flex flex-col items-center gap-3">
+          <p>No items found in this category. Check back soon for new bakes & creations!</p>
+          <button
+            onClick={() => setSelectedCategory("All Products")}
+            className="rounded-full bg-[#3B2417] text-[#FBF3EA] px-6 py-2 text-xs font-bold shadow hover:bg-[#B5476B] transition-colors"
+          >
+            Show All Products ({items.length})
+          </button>
         </div>
       ) : (
         <motion.div
